@@ -1,0 +1,11 @@
+Debug/
+x64/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.bin
+.vs/
+result
+latex/
+html/
