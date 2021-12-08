@@ -11,7 +11,7 @@
 #include "Map.h"
 using namespace necro;
 int main() {
-
+	/*
 	vector<DLenemy_data> Enemy_NG;
 	vector<Golem_data> Golems;
 	vector<Slave> Slaves;
@@ -120,7 +120,6 @@ int main() {
 	mob_1.en_satas.chance = 60;
 	mob_1.en_satas.damage = 60;
 	mob_1.en_satas.status = 0;
-	mob_1.LorD = 1;
 	mob_1.statusL = 1;
 	mob_1.su_stats.chance = 20;
 	mob_1.su_stats.summoner = 0;
@@ -134,7 +133,6 @@ int main() {
 	mob_1.cr_stats.max_health = 100;
 	mob_1.en_satas.chance = 100;
 	mob_1.en_satas.damage = 100;
-	mob_1.LorD = 0;
 	mob_1.cr_stats.fraction = "Evil";
 	Enemy_NG.push_back(mob_1);
 	LEnemy mob2(mob_1);
@@ -175,14 +173,7 @@ int main() {
 	if (mob1.get_dateC().real_health <= 0) {
 		mob1.death_cr();
 	}
-	/*
-	try {
-		spel4.make_mage(necr1, mob1);
-	}
-	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-	*/
+	
 	Necro_data data = necr1.get_data();
 	data.real_mana = 100;
 	necr1.set_data(data);
@@ -202,6 +193,6 @@ int main() {
 	catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
-
+	*/
 	return 0;
 }

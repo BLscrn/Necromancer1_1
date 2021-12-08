@@ -203,7 +203,7 @@ namespace necro {
 		Undead& operator = (const Undead other);
 		virtual Slave get_data();
 		virtual void set_data(Slave);
-		virtual DEnemy become_slave(Creature Who, LEnemy&);
+		virtual DEnemy become_slave(Creature Who, Enemy&);
 		virtual void become_available();
 	};
 

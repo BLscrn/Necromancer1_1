@@ -91,7 +91,6 @@ namespace necro {
 			help_cr.cr_stats = (*help_vectB).cr_stats;
 			write_cr(help_cr, f);
 			fwrite(&(*help_vectB).en_satas, sizeof(Enemy), 1, f);
-			fwrite(&(*help_vectB).LorD, sizeof(bool), 1, f);
 			fwrite(&(*help_vectB).statusL, sizeof(bool), 1, f);
 			fwrite(&(*help_vectB).su_stats, sizeof(Summoner), 1, f);
 			help_int = (*help_vectB).type.length();
@@ -114,7 +113,6 @@ namespace necro {
 			add_el.coor_stats = help_cr.coor_stats;
 			add_el.cr_stats = help_cr.cr_stats;
 			fread(&add_el.en_satas, sizeof(Enemy), 1, f);
-			fread(&add_el.LorD, sizeof(bool), 1, f);
 			fread(&add_el.statusL, sizeof(bool), 1, f);
 			fread(&add_el.su_stats, sizeof(Summoner), 1, f);
 			fread(&help_int, sizeof(int), 1, f);

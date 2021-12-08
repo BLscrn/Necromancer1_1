@@ -21,7 +21,7 @@ namespace necro {
 		virtual bool move(Lvl lvl, char direction) { return  Object::move(lvl, direction); };
 		virtual Creature get_dateC() { return ICreature::get_dateC(); };
 		virtual void set_dateC(Creature data) { return ICreature::set_dateC(data); };
-		virtual Coordinate death_cr() {/* add with game */ };
+		virtual Coordinate death_cr() {/* add with game */ return this->coor; };
 		virtual void set_dateCO(Coordinate data) { return Object::set_dateCO(data); };
 		virtual Coordinate get_dateCO() { return Object::get_dateCO(); };
 	};

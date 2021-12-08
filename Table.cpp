@@ -25,8 +25,8 @@ namespace necro {
 	void desiccation::update_spell() {
 		this->stats.level++;
 	}
-	void desiccation::make_mage(Necromancer& Necro, LEnemy& Target) {
-		if (Target.get_dateC().real_health > 0) {
+	void desiccation::make_mage(Necromancer& Necro, Enemy*& Target) {
+		if (Target->get_dateC().real_health > 0 && Target->get_data().statusL == 0) {
 			int ch;
 			const char* ch1[] = {
 				"1.Desiccate the corpe(Health):",
@@ -40,7 +40,7 @@ namespace necro {
 			Necro_data stats1 = Necro.get_data();
 			if (stats1.real_mana - (40 - 40 * (0.1 * this->stats.level)) < 0) {
 				throw std::logic_error("not enought mana");
-				//âûçâàòü èñêëþ÷åíèå
+				
 			}
 			stats1.real_mana -= (40 - 40 * (0.1 * this->stats.level));
 			Necro.set_data(stats1);
@@ -48,21 +48,21 @@ namespace necro {
 				Creature stats;
 				stats = Necro.get_dateC();
 
-				stats.real_health = (Target.get_dateC().max_health * (this->stats.level) / 10 + 5 * Target.get_dateC().level) + stats.real_health
-			> stats.max_health ? stats.max_health : (Target.get_dateC().max_health * (this->stats.level) / 10 + 5 * Target.get_dateC().level) + stats.real_health;
+				stats.real_health = (Target->get_dateC().max_health * (this->stats.level) / 10 + 5 * Target->get_dateC().level) + stats.real_health
+			> stats.max_health ? stats.max_health : (Target->get_dateC().max_health * (this->stats.level) / 10 + 5 * Target->get_dateC().level) + stats.real_health;
 				Necro.set_dateC(stats);
 			}
 			else if (ch == 2) {
 				Necro_data stats = Necro.get_data();
-				stats.real_mana = (Target.get_dateC().max_health * (this->stats.level) / 10 + 5 * Target.get_dateC().level) + stats.real_mana
-			> stats.max_mana ? stats.max_mana : (Target.get_dateC().max_health * (this->stats.level) / 10 + 5 * Target.get_dateC().level) + stats.real_mana;
+				stats.real_mana = (Target->get_dateC().max_health * (this->stats.level) / 10 + 5 * Target->get_dateC().level) + stats.real_mana
+			> stats.max_mana ? stats.max_mana : (Target->get_dateC().max_health * (this->stats.level) / 10 + 5 * Target->get_dateC().level) + stats.real_mana;
 				Necro.set_data(stats);
 
 			}
-			DLenemy_data data = Target.get_data();
-			data.LorD = 0;
+			DLenemy_data data = Target->get_data();
 			data.statusL = 0;
-			Target.set_data(data);
+			data.cr_stats.max_health = -1;
+			Target->set_data(data);
 
 		}
 		else {
@@ -89,17 +89,16 @@ namespace necro {
 	void curse::update_spell() {
 		this->stats.level++;
 	}
-	void curse::make_mage(Necromancer& Necro, LEnemy& Target) {
+	void curse::make_mage(Necromancer& Necro, Enemy*& Target) {
 		Necro_data stats = Necro.get_data();
 		if (stats.real_mana - (40 - 40 * (0.1 * this->stats.level)) < 0) {
 			throw std::logic_error("not enought mana");
-			//âûçâàòü èñêëþ÷åíèå
 		}
 		stats.real_mana -= (40 - 40 * (0.1 * this->stats.level));
 
-		Creature stats1 = Target.get_dateC();
+		Creature stats1 = Target->get_dateC();
 		stats1.real_health -= 10 * (this->stats.level) + (this->stats.level);
-		Target.set_dateC(stats1);
+		Target->set_dateC(stats1);
 		Necro.set_data(stats);
 	}
 
@@ -126,7 +125,7 @@ namespace necro {
 		this->stats.level++;
 	}
 
-	void necromancy::make_mage(Necromancer& Necro, LEnemy& Target) {
+	void necromancy::make_mage(Necromancer& Necro, Enemy*& Target) {
 		int ch;
 		for (int i = 0; i < this->stats.slaves.getlen(); i++) {
 			std::cout << i + 1 << ". " << this->stats.slaves[i].get_data().name << " " << this->stats.slaves[i].get_data().can_I << std::endl;
@@ -135,20 +134,16 @@ namespace necro {
 		if (this->stats.slaves[ch - 1].get_data().can_I == 0) {
 			throw std::logic_error("You can't use this slave");
 		}
-		if (Target.get_data().statusL == 1) {
+		if (Target->get_data().statusL == 1) {
 			throw std::logic_error("Enemy is alive");
 
 		}
-		if (Target.get_data().LorD == 0) {
-			throw std::logic_error("He is undead");
-
-		}
 		Necro_data stats = Necro.get_data();
-		if (stats.real_mana - (Target.get_data().en_satas.damage + Target.get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level) < 0) {
+		if (stats.real_mana - (Target->get_data().en_satas.damage + Target->get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level) < 0) {
 			throw std::logic_error("not enought mana");
 		}
-		stats.real_mana -= (Target.get_data().en_satas.damage + Target.get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level < 0);
-		this->stats.slaves[ch - 1].become_slave(Necro.get_dateC(), Target);
+		stats.real_mana -= (Target->get_data().en_satas.damage + Target->get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level < 0);
+		this->stats.slaves[ch - 1].become_slave(Necro.get_dateC(), *(Target));
 		Necro.set_data(stats);
 	}
 	morphism::morphism() {
@@ -167,7 +162,7 @@ namespace necro {
 		this->stats.level++;
 	}
 
-	void morphism::make_mage(Necromancer& Necro, LEnemy& Target) {
+	void morphism::make_mage(Necromancer& Necro, Enemy*& Target) {
 		int ch1;
 		for (int i = 0; i < this->stats.slaves.getlen(); i++) {
 			std::cout << i + 1 << ". " << this->stats.slaves[i].get_data().name << " " << this->stats.slaves[i].get_data().can_I << std::endl;
@@ -177,35 +172,31 @@ namespace necro {
 			throw std::logic_error("You can't use this slave");
 
 		}
-		if (Target.get_data().statusL == 1 && Target.get_data().LorD == 1) {
+		if (Target->get_data().statusL == 1) {
 			throw std::logic_error("Enemy is alive");
 
 		}
-		if (!check_access(Target.get_data().type)) {
+		if (!check_access(Target->get_data().type)) {
 			throw std::logic_error("You can't transform to this type");
 
 		}
-		if (Target.get_data().LorD == 1) {
-			throw std::logic_error("Enemy is alive");
-
-		}
-		if (this->stats.slaves[ch1 - 1].get_data().name == Target.get_data().type) {
+		if (this->stats.slaves[ch1 - 1].get_data().name == Target->get_data().type) {
 			throw std::logic_error("You can't tranform to the same type");
 
 		}
 		Necro_data stats = Necro.get_data();
-		if (stats.real_mana - (Target.get_data().en_satas.damage + Target.get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level) < 0) {
+		if (stats.real_mana - (Target->get_data().en_satas.damage + Target->get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level) < 0) {
 			throw std::logic_error("not enought mana");
 
 		}
 
-		stats.real_mana -= (Target.get_data().en_satas.damage + Target.get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level < 0);
+		stats.real_mana -= (Target->get_data().en_satas.damage + Target->get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level < 0);
 		for (int i = 0; i < this->stats.slaves.getlen(); i++) {
-			if (this->stats.slaves[i].get_data().name == Target.get_data().type) {
-				this->stats.slaves[i].become_slave(Target.get_dateC(), Target);
+			if (this->stats.slaves[i].get_data().name == Target->get_data().type) {
+				this->stats.slaves[i].become_slave(Target->get_dateC(), *Target);
 			}
 		}
-		this->stats.slaves[ch1 - 1].become_slave(Target.get_dateC(), Target);
+		this->stats.slaves[ch1 - 1].become_slave(Target->get_dateC(), *Target);
 		Necro.set_data(stats);
 
 	}

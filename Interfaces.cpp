@@ -106,6 +106,7 @@ namespace necro {
 		help.statusL = this->statusL;
 		help.su_stats = this->su_stats;
 		help.type = this->type;
+		return help;
 	}
 	void LEnemy::set_data(DLenemy_data data) {
 		this->cr_stats = data.cr_stats;
@@ -181,6 +182,7 @@ namespace necro {
 		help.statusL = this->statusL;
 		help.su_stats = this->su_stats;
 		help.type = this->type;
+		return help;
 	}
 	void DEnemy::set_data(DLenemy_data data) {
 		this->cr_stats = data.cr_stats;
@@ -203,6 +205,7 @@ namespace necro {
 	}
 	Coordinate DEnemy::death_cr() {
 		this->cr_stats.real_health = 0;
+		this->cr_stats.max_health = -1;
 		this->statusL = 0;
 		return this->coor;
 	}
@@ -230,7 +233,7 @@ namespace necro {
 		this->Undead_stats.fraction = data.fraction;
 		this->Undead_stats.name = data.name;
 	}
-	DEnemy Undead::become_slave(Creature Who, LEnemy& Target) {
+	DEnemy Undead::become_slave(Creature Who, Enemy& Target) {
 		if (this->Undead_stats.can_I == true) {
 			DLenemy_data stats;
 			stats = Target.get_data();
