@@ -127,6 +127,7 @@ namespace necro {
 
 	void necromancy::make_mage(Necromancer& Necro, Enemy*& Target) {
 		int ch;
+		Enemy* ret_enemy = nullptr;
 		for (int i = 0; i < this->stats.slaves.getlen(); i++) {
 			std::cout << i + 1 << ". " << this->stats.slaves[i].get_data().name << " " << this->stats.slaves[i].get_data().can_I << std::endl;
 		}
@@ -143,7 +144,9 @@ namespace necro {
 			throw std::logic_error("not enought mana");
 		}
 		stats.real_mana -= (Target->get_data().en_satas.damage + Target->get_data().cr_stats.max_health) / 2 - (15 * this->stats.level + this->stats.level < 0);
-		this->stats.slaves[ch - 1].become_slave(Necro.get_dateC(), *(Target));
+		ret_enemy = this->stats.slaves[ch - 1].become_slave(Necro.get_dateC(), *(Target));
+		delete Target;
+		Target = ret_enemy;
 		Necro.set_data(stats);
 	}
 	morphism::morphism() {
@@ -196,7 +199,10 @@ namespace necro {
 				this->stats.slaves[i].become_slave(Target->get_dateC(), *Target);
 			}
 		}
-		this->stats.slaves[ch1 - 1].become_slave(Target->get_dateC(), *Target);
+		DEnemy* ret_enemy = nullptr;
+		ret_enemy = this->stats.slaves[ch1 - 1].become_slave(Target->get_dateC(), *Target);
+		delete Target;
+		Target = ret_enemy;
 		Necro.set_data(stats);
 
 	}

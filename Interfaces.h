@@ -71,6 +71,7 @@ namespace necro {
 		enemy en_satas;
 		std::string type;
 		double ignore_damm;
+		bool statusL;
 	};
 	struct DLenemy_data
 	{
@@ -163,10 +164,11 @@ namespace necro {
 	};
 	class LEnemy :public Enemy, public  Summoner{
 	public:
+		LEnemy();
 		LEnemy(DLenemy_data);
 		LEnemy(LEnemy& other);
-		virtual Coordinate death_cr();
 		LEnemy& operator = (const LEnemy other);
+		virtual Coordinate death_cr();
 		virtual DLenemy_data get_data();
 		virtual void set_data(DLenemy_data data);
 		virtual bool move(Lvl lvl, char direction) { return Object::move(lvl, direction); };
@@ -180,6 +182,7 @@ namespace necro {
 
 	class DEnemy :public Enemy, public  Summoner {
 	public:
+		DEnemy();
 		DEnemy(DLenemy_data);
 		DEnemy(DEnemy& other);
 		virtual Coordinate death_cr();
@@ -203,7 +206,7 @@ namespace necro {
 		Undead& operator = (const Undead other);
 		virtual Slave get_data();
 		virtual void set_data(Slave);
-		virtual DEnemy become_slave(Creature Who, Enemy&);
+		virtual DEnemy* become_slave(Creature Who, Enemy&);
 		virtual void become_available();
 	};
 

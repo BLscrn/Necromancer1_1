@@ -37,22 +37,28 @@ namespace necro {
 		virtual void set_date(Spell) = 0;
 	};
 
-	class Golem : public IWork_data<Golem_data>, public ICreature {
+	class Golem :public Enemy {
 	private:
-		//Creature cr_stats;
 		enemy en_satas;
 		std::string type;
+		bool statusL;
 		double ignore_damm;
 
 	public:
-		virtual Golem_data get_data();
-		virtual void set_data(Golem_data data);
+		Golem(Golem_data);
+		Golem(Golem& other);
+		Golem& operator = (const Golem other);
+		virtual Golem_data get_dataG();
+		virtual void set_dataG(Golem_data data);
+		virtual DLenemy_data get_data();
+		virtual void set_data(DLenemy_data data);
 		virtual bool move(Lvl lvl, char direction) { return Object::move(lvl, direction); };
 		virtual Creature get_dateC() { return ICreature::get_dateC(); };
 		virtual void set_dateC(Creature data) { return ICreature::set_dateC(data); };
-		virtual Coordinate death_cr() {/* add with map */ };
+		virtual Coordinate death_cr() {/* add with map */ return this->coor; };
 		virtual void set_dateCO(Coordinate data) { return Object::set_dateCO(data); };
-		virtual Coordinate get_dateCO() { return Object::get_dateCO(); };
+		virtual Coordinate get_dateCO() {return Object::get_dateCO(); };
+		virtual void cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
 	};
 
 

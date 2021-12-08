@@ -90,9 +90,9 @@ namespace necro {
 			help_cr.coor_stats = (*help_vectB).coor_stats;
 			help_cr.cr_stats = (*help_vectB).cr_stats;
 			write_cr(help_cr, f);
-			fwrite(&(*help_vectB).en_satas, sizeof(Enemy), 1, f);
+			fwrite(&(*help_vectB).en_satas, sizeof(enemy), 1, f);
 			fwrite(&(*help_vectB).statusL, sizeof(bool), 1, f);
-			fwrite(&(*help_vectB).su_stats, sizeof(Summoner), 1, f);
+			fwrite(&(*help_vectB).su_stats, sizeof(summoner), 1, f);
 			help_int = (*help_vectB).type.length();
 			fwrite(&help_int, sizeof(int), 1, f);
 			fwrite(&(*help_vectB).type[0], sizeof(char), help_int + 1, f);
@@ -112,9 +112,9 @@ namespace necro {
 			help_cr = read_cr(f);
 			add_el.coor_stats = help_cr.coor_stats;
 			add_el.cr_stats = help_cr.cr_stats;
-			fread(&add_el.en_satas, sizeof(Enemy), 1, f);
+			fread(&add_el.en_satas, sizeof(enemy), 1, f);
 			fread(&add_el.statusL, sizeof(bool), 1, f);
-			fread(&add_el.su_stats, sizeof(Summoner), 1, f);
+			fread(&add_el.su_stats, sizeof(summoner), 1, f);
 			fread(&help_int, sizeof(int), 1, f);
 			help_char = new char[help_int + 1];
 			fread(help_char, sizeof(char), help_int + 1, f);
@@ -140,11 +140,12 @@ namespace necro {
 			help_cr.coor_stats = (*help_vectB).coo_stats;
 			help_cr.cr_stats = (*help_vectB).cr_stats;
 			write_cr(help_cr, f);
-			fwrite(&(*help_vectB).en_satas, sizeof(Enemy), 1, f);
+			fwrite(&(*help_vectB).en_satas, sizeof(enemy), 1, f);
 			fwrite(&(*help_vectB).ignore_damm, sizeof(double), 1, f);
 			help_int = (*help_vectB).type.length();
 			fwrite(&help_int, sizeof(int), 1, f);
 			fwrite(&(*help_vectB).type[0], sizeof(char), help_int + 1, f);
+			fwrite(&(*help_vectB).statusL, sizeof(bool), 1, f);
 		}
 		fclose(f);
 	}
@@ -161,13 +162,14 @@ namespace necro {
 			help_cr = read_cr(f);
 			add_el.coo_stats = help_cr.coor_stats;
 			add_el.cr_stats = help_cr.cr_stats;
-			fread(&add_el.en_satas, sizeof(Enemy), 1, f);
+			fread(&add_el.en_satas, sizeof(enemy), 1, f);
 			fread(&add_el.ignore_damm, sizeof(double), 1, f);
 			fread(&help_int, sizeof(int), 1, f);
 			help_char = new char[help_int + 1];
 			fread(help_char, sizeof(char), help_int + 1, f);
 			add_el.type = std::string(help_char);
 			delete[] help_char;
+			fread(&add_el.statusL, sizeof(bool), 1, f);
 			ret_data.push_back(add_el);
 		}
 		fclose(f);

@@ -73,6 +73,24 @@ namespace necro {
 		}
 
 	}
+
+	LEnemy::LEnemy() {
+		this->coor.x = 0;
+		this->coor.y = 0;
+		this->cr_stats.fraction = "";
+		this->cr_stats.level = 0;
+		this->cr_stats.max_health = 0;
+		this->cr_stats.name = "";
+		this->cr_stats.real_health = 0;
+		this->en_satas.chance = 0;
+		this->en_satas.damage = 0;
+		this->en_satas.status = 0;
+		this->statusL = 0;
+		this->su_stats.chance = 0;
+		this->su_stats.summoner = 0;
+		this->type = "";
+	}
+
 	LEnemy::LEnemy(LEnemy& other) {
 		DLenemy_data help = other.get_data();
 		this->coor = other.coor;
@@ -146,6 +164,23 @@ namespace necro {
 			//action
 		}
 		return demon;
+	}
+
+	DEnemy::DEnemy() {
+		this->coor.x = 0;
+		this->coor.y = 0;
+		this->cr_stats.fraction = "";
+		this->cr_stats.level = 0;
+		this->cr_stats.max_health = 0;
+		this->cr_stats.name = "";
+		this->cr_stats.real_health = 0;
+		this->en_satas.chance = 0;
+		this->en_satas.damage = 0;
+		this->en_satas.status = 0;
+		this->statusL = 0;
+		this->su_stats.chance = 0;
+		this->su_stats.summoner = 0;
+		this->type = "";
 	}
 
 	DEnemy::DEnemy(DEnemy& other) {
@@ -233,18 +268,29 @@ namespace necro {
 		this->Undead_stats.fraction = data.fraction;
 		this->Undead_stats.name = data.name;
 	}
-	DEnemy Undead::become_slave(Creature Who, Enemy& Target) {
+	DEnemy* Undead::become_slave(Creature Who, Enemy& Target) {
 		if (this->Undead_stats.can_I == true) {
 			DLenemy_data stats;
 			stats = Target.get_data();
-			stats.cr_stats.name += this->Undead_stats.name;
-			stats.en_satas.damage *= this->Undead_stats.damage_kof;
-			stats.cr_stats.max_health *= this->Undead_stats.damage_kof;
-			stats.cr_stats.fraction = Who.fraction;
-			stats.type = this->Undead_stats.name;
-			stats.statusL = 1;
-			DEnemy Demon(stats);
-			return Demon;
+			if (stats.statusL == 0 && stats.type == this->Undead_stats.name) {
+				stats.cr_stats.max_health /= this->Undead_stats.damage_kof;
+				stats.en_satas.damage /= this->Undead_stats.damage_kof;
+				Target.set_data(stats);
+				return nullptr;
+			}
+			else {
+				stats.cr_stats.name.erase(stats.cr_stats.name.length() - stats.type.length(), stats.type.length());
+				stats.cr_stats.name += this->Undead_stats.name;
+				stats.en_satas.damage *= this->Undead_stats.damage_kof;
+				stats.cr_stats.max_health *= this->Undead_stats.damage_kof;
+				stats.cr_stats.fraction = Who.fraction;
+				stats.type = this->Undead_stats.name;
+				stats.statusL = 0;
+
+				DEnemy* Demon = new DEnemy;
+				Demon->set_data(stats);
+				return Demon;
+			}
 		}
 	}
 	void Undead::become_available() {

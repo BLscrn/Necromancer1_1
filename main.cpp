@@ -11,16 +11,16 @@
 #include "Map.h"
 using namespace necro;
 int main() {
-	/*
+	
 	vector<DLenemy_data> Enemy_NG;
 	vector<Golem_data> Golems;
 	vector<Slave> Slaves;
 	vector<Spell> Spells;
-	std::map<std::string, ISpells<LEnemy>*> test;
-	ISpells<LEnemy>* first_s = new desiccation;
-	ISpells<LEnemy>* second_s = new curse;
-	ISpells<LEnemy>* third_s = new necromancy;
-	ISpells<LEnemy>* fourth_s = new morphism;
+	std::map<std::string, ISpells<Enemy*>*> test;
+	ISpells<Enemy*>* first_s = new desiccation;
+	ISpells<Enemy*>* second_s = new curse;
+	ISpells<Enemy*>* third_s = new necromancy;
+	ISpells<Enemy*>* fourth_s = new morphism;
 	Spells.push_back(first_s->get_data());
 	Spells.push_back(second_s->get_data());
 	Spells.push_back(third_s->get_data());
@@ -28,10 +28,10 @@ int main() {
 	safe_SpellF(Spells, "Spells.bin");
 	Spells = get_SpellF("Spells.bin");
 
-	test.insert(std::pair<std::string, ISpells<LEnemy>*>("desiccation", first_s));
-	test.insert(std::pair<std::string, ISpells<LEnemy>*>("curse", second_s));
-	test.insert(std::pair<std::string, ISpells<LEnemy>*>("necromancy", third_s));
-	test.insert(std::pair<std::string, ISpells<LEnemy>*>("morphism", fourth_s));
+	test.insert(std::pair<std::string, ISpells<Enemy*>*>("desiccation", first_s));
+	test.insert(std::pair<std::string, ISpells<Enemy*>*>("curse", second_s));
+	test.insert(std::pair<std::string, ISpells<Enemy*>*>("necromancy", third_s));
+	test.insert(std::pair<std::string, ISpells<Enemy*>*>("morphism", fourth_s));
 
 	Level lvl1(10, 10);
 	Lvl hlpL = lvl1.get_data();
@@ -50,6 +50,8 @@ int main() {
 	Level lvl12(get_LvlF("lvl1.bin"));
 	Lvl help_lvl = lvl12.get_data();
 	Field end1 = lvl12.get_data().field[3][4];
+
+
 
 	Necromancer necr1;
 	safe_NecroF(necr1.get_data(), "NecroF.bin");
@@ -103,6 +105,8 @@ int main() {
 	test["necromancy"]->set_date(help);
 	test["morphism"]->set_date(help);
 
+
+	//+
 	Iterator<Undead> test_i(help.slaves.begin());
 	Iterator<Undead> test_i1;
 	test_i1 = help.slaves.end();
@@ -110,7 +114,7 @@ int main() {
 	++test_i;
 	--test_i1;
 
-
+	//+
 	DLenemy_data mob_1;
 	mob_1.cr_stats.fraction = "Holy orden";
 	mob_1.cr_stats.level = 2;
@@ -126,22 +130,24 @@ int main() {
 	mob_1.type = "";
 	mob_1.coor_stats.x = 1;
 	mob_1.coor_stats.y = 0;
-	LEnemy mob1(mob_1);
+	Enemy* mob1 = new LEnemy;
+	mob1->set_data(mob_1);
 	Enemy_NG.push_back(mob_1);
-	mob_1.cr_stats.name = "Skeleton";
+	mob_1.cr_stats.name = "living Skeleton";
 	mob_1.cr_stats.max_health = 100;
 	mob_1.cr_stats.max_health = 100;
 	mob_1.en_satas.chance = 100;
 	mob_1.en_satas.damage = 100;
 	mob_1.cr_stats.fraction = "Evil";
 	Enemy_NG.push_back(mob_1);
-	LEnemy mob2(mob_1);
+	Enemy* mob2 = new LEnemy; 
+	mob2->set_data(mob_1);
 	safe_EnemyF(Enemy_NG, "EnemyNG.bin");
 	Enemy_NG = get_EnemyF("EnemyNG.bin");
 	LEnemy  qwerty = Enemy_NG[1];
 
 	try {
-		mob1.cause_dam(necr1);
+		mob1->cause_dam(necr1);
 	}
 	catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
@@ -170,8 +176,8 @@ int main() {
 		std::cout << e.what() << std::endl;
 	}
 
-	if (mob1.get_dateC().real_health <= 0) {
-		mob1.death_cr();
+	if (mob1->get_dateC().real_health <= 0) {
+		mob1->death_cr();
 	}
 	
 	Necro_data data = necr1.get_data();
@@ -193,6 +199,6 @@ int main() {
 	catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
-	*/
+	
 	return 0;
 }
