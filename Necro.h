@@ -39,9 +39,9 @@ namespace necro {
 
 	class Golem :public Enemy {
 	private:
-		enemy en_satas;
-		std::string type;
-		bool statusL;
+		//enemy en_satas;
+		//std::string type;
+		//bool statusL;
 		double ignore_damm;
 
 	public:
