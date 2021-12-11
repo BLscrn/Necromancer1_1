@@ -10,62 +10,74 @@ namespace necro {
 
 
 	bool Object::move(Lvl lvl, char way) {
-		if (way == 'w' && this->coor.y - 1 > -1 && lvl.field[this->coor.x][this->coor.y - 1].What_it < 2) {
-			this->coor.y -= 1;
+		if (way == 'w' && this->y - 1 > -1 && lvl.field[this->x][this->y - 1].What_it < 2) {
+			this->y -= 1;
 			return true;
 		}
-		else if (way == 'd' && this->coor.x + 1 < lvl.size_x && lvl.field[this->coor.x + 1][this->coor.y].What_it < 2) {
-			this->coor.x += 1;
+		else if (way == 'd' && this->x + 1 < lvl.size_x && lvl.field[this->x + 1][this->y].What_it < 2) {
+			this->x += 1;
 			return true;
 		}
-		else if (way == 's' && this->coor.y + 1 < lvl.size_y && lvl.field[this->coor.x][this->coor.y + 1].What_it < 2) {
-			this->coor.y += 1;
+		else if (way == 's' && this->y + 1 < lvl.size_y && lvl.field[this->x][this->y + 1].What_it < 2) {
+			this->y += 1;
 			return true;
 		}
-		else if (way == 'a' && this->coor.x - 1 > -1 && lvl.field[this->coor.x - 1][this->coor.y].What_it < 2) {
-			this->coor.y -= 1;
+		else if (way == 'a' && this->x - 1 > -1 && lvl.field[this->x - 1][this->y].What_it < 2) {
+			this->y -= 1;
 			return true;
 		}
 		return false;
 	}
 
 	Coordinate Object::get_dateCO() {
-		return this->coor;
+		Coordinate coor;
+		coor.x = this->x;
+		coor.y = this->y;
+		return coor;
 	}
 	void Object::set_dateCO(Coordinate data) {
-		this->coor = data;
+		this->x = data.x;
+		this->y = data.y;
 	}
 
 	void ICreature::set_dateC(Creature data) {
-		this->cr_stats = data;
+		this->fraction = data.fraction;
+		this->max_health = data.max_health;
+		this->real_health = data.real_health;
+		this->name = data.name;
+		this->level = data.level;
 	}
 	Creature ICreature::get_dateC() {
 		Creature ret_data;
-		ret_data = this->cr_stats;
+		ret_data.fraction = this->fraction;
+		ret_data.level = this->level;
+		ret_data.max_health = this->max_health;
+		ret_data.name = this->name;
+		ret_data.real_health = this->real_health;
 		return ret_data;
 	}
 
 
 	Enemy::Enemy() {
-		this->coor.x = 0;
-		this->coor.y = 0;
-		this->cr_stats.fraction = "";
-		this->cr_stats.level = 0;
-		this->cr_stats.max_health = 0;
-		this->cr_stats.real_health = 0;
-		this->cr_stats.name = "";
-		this->en_satas.chance = 0;
-		this->en_satas.damage = 0;
-		this->en_satas.status = 0;
+		this->x = 0;
+		this->y = 0;
+		this->fraction = "";
+		this->level = 0;
+		this->max_health = 0;
+		this->real_health = 0;
+		this->name = "";
+		this->chance_F = 0;
+		this->damage = 0;
+		this->status = 0;
 		this->statusL = 0;
 		this->type = "";
 	}
 	void Enemy::cause_dam(ICreature& Target) {
 		Creature data_CT = Target.get_dateC();
 		Coordinate data_COT = Target.get_dateCO();
-		if ((this->coor.x - data_COT.x) * (this->coor.x - data_COT.x) + (this->coor.y - data_COT.y) * (this->coor.y - data_COT.y) == 1) {
+		if ((this->x - data_COT.x) * (this->x - data_COT.x) + (this->y - data_COT.y) * (this->y - data_COT.y) == 1) {
 			//random
-			data_CT.real_health -= this->en_satas.damage;
+			data_CT.real_health -= this->damage;
 			Target.set_dateC(data_CT);
 		}
 		else {
@@ -75,80 +87,121 @@ namespace necro {
 	}
 
 	LEnemy::LEnemy() {
-		this->coor.x = 0;
-		this->coor.y = 0;
-		this->cr_stats.fraction = "";
-		this->cr_stats.level = 0;
-		this->cr_stats.max_health = 0;
-		this->cr_stats.name = "";
-		this->cr_stats.real_health = 0;
-		this->en_satas.chance = 0;
-		this->en_satas.damage = 0;
-		this->en_satas.status = 0;
+		this->x = 0;
+		this->y = 0;
+		this->fraction = "";
+		this->level = 0;
+		this->max_health = 0;
+		this->name = "";
+		this->real_health = 0;
+		this->chance_F = 0;
+		this->damage = 0;
+		this->status = 0;
 		this->statusL = 0;
-		this->su_stats.chance = 0;
-		this->su_stats.summoner = 0;
+		this->chance = 0;
+		this->summoner = 0;
 		this->type = "";
 	}
 
 	LEnemy::LEnemy(LEnemy& other) {
-		DLenemy_data help = other.get_data();
-		this->coor = other.coor;
-		this->cr_stats = other.cr_stats;
-		this->en_satas = other.en_satas;
-		this->statusL = other.statusL;
-		this->su_stats = other.su_stats;
-		this->type = other.type;
+		//DLenemy_data help = other.get_data();
+		//this->coor = other.coor;
+		this->x = other.GetCooX();
+		this->y = other.GetCooY();
+		//this->cr_stats = other.cr_stats;
+		this->fraction = other.GetCrFraction();
+		this->max_health = other.GetCrM_health();
+		this->real_health = other.GetCrR_health();
+		this->name = other.GetCrName();
+		this->level = other.GetCrLvl();
+		//this->en_satas = other.en_satas;
+		this->chance_F = other.GetEnemyCh();
+		this->damage = other.GetEnemyDam();
+		this->status = other.GetEnemySt();
+		this->statusL = other.GetEnemyStL();
+		this->type = other.GetEnemyType();
+		//this->su_stats = other.su_stats;
+		this->summoner = other.GetSummSu();
+		this->chance = other.GetSumCh();
 	}
 
 	LEnemy::LEnemy(DLenemy_data basic_data) {
-		this->cr_stats.fraction = basic_data.cr_stats.fraction;
-		this->cr_stats.level = basic_data.cr_stats.level;
-		this->cr_stats.max_health = basic_data.cr_stats.max_health;
-		this->cr_stats.name = basic_data.cr_stats.name;
-		this->cr_stats.real_health = basic_data.cr_stats.real_health;
-		this->en_satas.chance = basic_data.en_satas.chance;
-		this->en_satas.damage = basic_data.en_satas.damage;
-		this->en_satas.status = basic_data.en_satas.status;
+		this->fraction = basic_data.cr_stats.fraction;
+		this->level = basic_data.cr_stats.level;
+		this->max_health = basic_data.cr_stats.max_health;
+		this->name = basic_data.cr_stats.name;
+		this->real_health = basic_data.cr_stats.real_health;
+		this->chance = basic_data.en_satas.chance;
+		this->damage = basic_data.en_satas.damage;
+		this->status = basic_data.en_satas.status;
 		this->statusL = basic_data.statusL;
-		this->su_stats.chance = basic_data.su_stats.chance;
-		this->su_stats.summoner = basic_data.su_stats.summoner;
+		this->chance = basic_data.su_stats.chance;
+		this->summoner = basic_data.su_stats.summoner;
 		this->type = basic_data.type;
-		this->coor = basic_data.coor_stats;
+		this->x = basic_data.coor_stats.x;
+		this->y = basic_data.coor_stats.y;
 	}
 	DLenemy_data LEnemy::get_data() {
 		DLenemy_data help;
-		help.coor_stats = this->coor;
-		help.cr_stats = this->cr_stats;
-		help.en_satas = this->en_satas;
+		help.coor_stats.x = this->x;
+		help.coor_stats.y = this->y;
+		help.cr_stats.fraction = this->fraction;
+		help.cr_stats.level = this->level;
+		help.cr_stats.max_health = this->max_health;
+		help.cr_stats.real_health = this->real_health;
+		help.cr_stats.name = this->name;
+		help.en_satas.chance = this->chance;
+		help.en_satas.damage = this->damage;
+		help.en_satas.status = this->status;
 		help.statusL = this->statusL;
-		help.su_stats = this->su_stats;
+		help.su_stats.chance = this->chance;
+		help.su_stats.summoner = this->summoner;
 		help.type = this->type;
 		return help;
 	}
 	void LEnemy::set_data(DLenemy_data data) {
-		this->cr_stats = data.cr_stats;
-		this->en_satas = data.en_satas;
+		this->fraction = data.cr_stats.fraction;
+		this->max_health = data.cr_stats.max_health;
+		this->real_health = data.cr_stats.real_health;
+		this->name = data.cr_stats.name;
+		this->level = data.cr_stats.level;
+		this->chance_F = data.en_satas.chance;
+		this->damage = data.en_satas.damage;
+		this->status = data.en_satas.status;
 		this->statusL = data.statusL;
-		this->su_stats = data.su_stats;
+		this->chance = data.su_stats.chance;
+		this->summoner = data.su_stats.summoner;
 		this->type = data.type;
-		this->coor = data.coor_stats;
+		this->x = data.coor_stats.x;
+		this->y = data.coor_stats.y;
 	}
 	
 
 	Coordinate LEnemy::death_cr() {
-		this->cr_stats.real_health = this->cr_stats.max_health;
+		this->real_health = this->max_health;
 		this->statusL = 0;
-		return this->coor;
+		return this->get_dateCO();
 	}
 	LEnemy& LEnemy::operator = (LEnemy other) {
-		DLenemy_data help = other.get_data();
-		this->coor = other.coor;
-		this->cr_stats = other.cr_stats;
-		this->en_satas = other.en_satas;
-		this->statusL = other.statusL;
-		this->su_stats = other.su_stats;
-		this->type = other.type;
+		//DLenemy_data help = other.get_data();
+		//this->coor = other.coor;
+		this->x = other.GetCooX();
+		this->y = other.GetCooY();
+		//this->cr_stats = other.cr_stats;
+		this->fraction = other.GetCrFraction();
+		this->max_health = other.GetCrM_health();
+		this->real_health = other.GetCrR_health();
+		this->name = other.GetCrName();
+		this->level = other.GetCrLvl();
+		//this->en_satas = other.en_satas;
+		this->chance_F = other.GetEnemyCh();
+		this->damage = other.GetEnemyDam();
+		this->status = other.GetEnemySt();
+		this->statusL = other.GetEnemyStL();
+		this->type = other.GetEnemyType();
+		//this->su_stats = other.su_stats;
+		this->summoner = other.GetSummSu();
+		this->chance = other.GetSumCh();
 		return *this;
 	}
 	DLenemy_data LEnemy::Call_cr() {
@@ -160,89 +213,121 @@ namespace necro {
 			return distr(rng);
 		};
 		random = gen_x();
-		if (random > this->su_stats.chance * 10) {
+		if (random > this->chance * 10) {
 			//action
 		}
 		return demon;
 	}
 
 	DEnemy::DEnemy() {
-		this->coor.x = 0;
-		this->coor.y = 0;
-		this->cr_stats.fraction = "";
-		this->cr_stats.level = 0;
-		this->cr_stats.max_health = 0;
-		this->cr_stats.name = "";
-		this->cr_stats.real_health = 0;
-		this->en_satas.chance = 0;
-		this->en_satas.damage = 0;
-		this->en_satas.status = 0;
+		this->x = 0;
+		this->y = 0;
+		this->fraction = "";
+		this->level = 0;
+		this->max_health = 0;
+		this->name = "";
+		this->real_health = 0;
+		this->chance = 0;
+		this->damage = 0;
+		this->status = 0;
 		this->statusL = 0;
-		this->su_stats.chance = 0;
-		this->su_stats.summoner = 0;
+		this->chance = 0;
+		this->summoner = 0;
 		this->type = "";
 	}
 
 	DEnemy::DEnemy(DEnemy& other) {
-		DLenemy_data help = other.get_data();
-		this->coor = other.coor;
-		this->cr_stats = other.cr_stats;
-		this->en_satas = other.en_satas;
-		this->statusL = other.statusL;
-		this->su_stats = other.su_stats;
-		this->type = other.type;
+		this->x = other.GetCooX();
+		this->y = other.GetCooY();
+		this->fraction = other.GetCrFraction();
+		this->max_health = other.GetCrM_health();
+		this->real_health = other.GetCrR_health();
+		this->name = other.GetCrName();
+		this->level = other.GetCrLvl();
+		this->chance_F = other.GetEnemyCh();
+		this->damage = other.GetEnemyDam();
+		this->status = other.GetEnemySt();
+		this->statusL = other.GetEnemyStL();
+		this->type = other.GetEnemyType();
+		this->summoner = other.GetSummSu();
+		this->chance = other.GetSumCh();
 	}
 
 	DEnemy::DEnemy(DLenemy_data basic_data) {
-		this->cr_stats.fraction = basic_data.cr_stats.fraction;
-		this->cr_stats.level = basic_data.cr_stats.level;
-		this->cr_stats.max_health = basic_data.cr_stats.max_health;
-		this->cr_stats.name = basic_data.cr_stats.name;
-		this->cr_stats.real_health = basic_data.cr_stats.real_health;
-		this->en_satas.chance = basic_data.en_satas.chance;
-		this->en_satas.damage = basic_data.en_satas.damage;
-		this->en_satas.status = basic_data.en_satas.status;
+		this->fraction = basic_data.cr_stats.fraction;
+		this->level = basic_data.cr_stats.level;
+		this->max_health = basic_data.cr_stats.max_health;
+		this->name = basic_data.cr_stats.name;
+		this->real_health = basic_data.cr_stats.real_health;
+		this->chance = basic_data.en_satas.chance;
+		this->damage = basic_data.en_satas.damage;
+		this->status = basic_data.en_satas.status;
 		this->statusL = basic_data.statusL;
-		this->su_stats.chance = basic_data.su_stats.chance;
-		this->su_stats.summoner = basic_data.su_stats.summoner;
+		this->chance = basic_data.su_stats.chance;
+		this->summoner = basic_data.su_stats.summoner;
 		this->type = basic_data.type;
-		this->coor = basic_data.coor_stats;
+		this->x = basic_data.coor_stats.x;
+		this->y = basic_data.coor_stats.y;
 	}
 
 	DLenemy_data DEnemy::get_data() {
 		DLenemy_data help;
-		help.coor_stats = this->coor;
-		help.cr_stats = this->cr_stats;
-		help.en_satas = this->en_satas;
+		help.coor_stats.x = this->x;
+		help.coor_stats.y = this->y;
+		help.cr_stats.fraction = this->fraction;
+		help.cr_stats.level = this->level;
+		help.cr_stats.max_health = this->max_health;
+		help.cr_stats.real_health = this->real_health;
+		help.cr_stats.name = this->name;
+		help.en_satas.chance = this->chance_F;
+		help.en_satas.damage = this->damage;
+		help.en_satas.status = this->status;
 		help.statusL = this->statusL;
-		help.su_stats = this->su_stats;
 		help.type = this->type;
+		help.su_stats.chance = this->chance;
+		help.su_stats.summoner = this->summoner;
+		
 		return help;
 	}
 	void DEnemy::set_data(DLenemy_data data) {
-		this->cr_stats = data.cr_stats;
-		this->en_satas = data.en_satas;
+		this->fraction = data.cr_stats.fraction;
+		this->max_health = data.cr_stats.max_health;
+		this->real_health = data.cr_stats.real_health;
+		this->name = data.cr_stats.name;
+		this->level = data.cr_stats.level;
+		this->chance_F = data.en_satas.chance;
+		this->damage = data.en_satas.damage;
+		this->status = data.en_satas.status;
 		this->statusL = data.statusL;
-		this->su_stats = data.su_stats;
+		this->chance = data.su_stats.chance;
+		this->summoner = data.su_stats.summoner;
 		this->type = data.type;
-		this->coor = data.coor_stats;
+		this->x = data.coor_stats.x;
+		this->y = data.coor_stats.y;
 	}
 
 	DEnemy& DEnemy::operator = (DEnemy other) {
-		DLenemy_data help = other.get_data();
-		this->coor = other.coor;
-		this->cr_stats = other.cr_stats;
-		this->en_satas = other.en_satas;
-		this->statusL = other.statusL;
-		this->su_stats = other.su_stats;
-		this->type = other.type;
+		this->x = other.GetCooX();
+		this->y = other.GetCooY();
+		this->fraction = other.GetCrFraction();
+		this->max_health = other.GetCrM_health();
+		this->real_health = other.GetCrR_health();
+		this->name = other.GetCrName();
+		this->level = other.GetCrLvl();
+		this->chance_F = other.GetEnemyCh();
+		this->damage = other.GetEnemyDam();
+		this->status = other.GetEnemySt();
+		this->statusL = other.GetEnemyStL();
+		this->type = other.GetEnemyType();
+		this->summoner = other.GetSummSu();
+		this->chance = other.GetSumCh();
 		return *this;
 	}
 	Coordinate DEnemy::death_cr() {
-		this->cr_stats.real_health = 0;
-		this->cr_stats.max_health = -1;
+		this->real_health = 0;
+		this->max_health = -1;
 		this->statusL = 0;
-		return this->coor;
+		return this->get_dateCO();
 	}
 	DLenemy_data DEnemy::Call_cr() {
 		DLenemy_data demon;
@@ -253,38 +338,43 @@ namespace necro {
 			return distr(rng);
 		};
 		random = gen_x();
-		if (random > this->su_stats.chance * 10) {
+		if (random > this->chance * 10) {
 			//action
 		}
 		return demon;
 	}
 
 	Slave Undead::get_data() {
-		return this->Undead_stats;
+		Slave ret_data;
+		ret_data.can_I = this->can_I;
+		ret_data.damage_kof = this->damage_kof;
+		ret_data.fraction = this->fraction;
+		ret_data.name = this->name;
+		return ret_data;
 	}
 	void Undead::set_data(Slave data) {
-		this->Undead_stats.can_I = data.can_I;
-		this->Undead_stats.damage_kof = data.damage_kof;
-		this->Undead_stats.fraction = data.fraction;
-		this->Undead_stats.name = data.name;
+		this->can_I = data.can_I;
+		this->damage_kof = data.damage_kof;
+		this->fraction = data.fraction;
+		this->name = data.name;
 	}
 	DEnemy* Undead::become_slave(Creature Who, Enemy& Target) {
-		if (this->Undead_stats.can_I == true) {
+		if (this->can_I == true) {
 			DLenemy_data stats;
 			stats = Target.get_data();
-			if (stats.statusL == 0 && stats.type == this->Undead_stats.name) {
-				stats.cr_stats.max_health /= this->Undead_stats.damage_kof;
-				stats.en_satas.damage /= this->Undead_stats.damage_kof;
+			if (stats.statusL == 0 && stats.type == this->name) {
+				stats.cr_stats.max_health /= this->damage_kof;
+				stats.en_satas.damage /= this->damage_kof;
 				Target.set_data(stats);
 				return nullptr;
 			}
 			else {
 				stats.cr_stats.name.erase(stats.cr_stats.name.length() - stats.type.length(), stats.type.length());
-				stats.cr_stats.name += this->Undead_stats.name;
-				stats.en_satas.damage *= this->Undead_stats.damage_kof;
-				stats.cr_stats.max_health *= this->Undead_stats.damage_kof;
+				stats.cr_stats.name += this->name;
+				stats.en_satas.damage *= this->damage_kof;
+				stats.cr_stats.max_health *= this->damage_kof;
 				stats.cr_stats.fraction = Who.fraction;
-				stats.type = this->Undead_stats.name;
+				stats.type = this->name;
 				stats.statusL = 0;
 
 				DEnemy* Demon = new DEnemy;
@@ -294,27 +384,27 @@ namespace necro {
 		}
 	}
 	void Undead::become_available() {
-		this->Undead_stats.can_I;
+		this->can_I;
 	}
 	Undead::Undead() {
-		this->Undead_stats.can_I = 0;
-		this->Undead_stats.damage_kof = 0;
-		this->Undead_stats.fraction = "";
-		this->Undead_stats.name = "";
+		this->can_I = 0;
+		this->damage_kof = 0;
+		this->fraction = "";
+		this->name = "";
 	}
 
 	Undead::Undead(const Undead& other) {
-		this->Undead_stats.can_I = other.Undead_stats.can_I;
-		this->Undead_stats.damage_kof = other.Undead_stats.damage_kof;
-		this->Undead_stats.fraction = other.Undead_stats.fraction;
-		this->Undead_stats.name = other.Undead_stats.name;
+		this->can_I = other.can_I;
+		this->damage_kof = other.damage_kof;
+		this->fraction = other.fraction;
+		this->name = other.name;
 	}
 
 	Undead& Undead::operator = (const Undead other) {
-		this->Undead_stats.can_I = other.Undead_stats.can_I;
-		this->Undead_stats.damage_kof = other.Undead_stats.damage_kof;
-		this->Undead_stats.fraction = other.Undead_stats.fraction;
-		this->Undead_stats.name = other.Undead_stats.name;
+		this->can_I = other.can_I;
+		this->damage_kof = other.damage_kof;
+		this->fraction = other.fraction;
+		this->name = other.name;
 		return *this;
 	}
 }

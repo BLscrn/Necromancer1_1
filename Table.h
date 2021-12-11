@@ -8,19 +8,21 @@
 namespace necro {
 
 	class desiccation : public ISpells<Enemy*> {
-	private:
-		Spell stats;
 	public:
 		desiccation();
 		virtual Spell get_data();
+		std::string GetSpellName() { return this->name; }
+		void SetSpellName(std::string Name) { this->name = Name; }
+		int GetSpellLvl() { return this->level; }
+		void SetSpellLvl(int Lvl) { this->level = Lvl; }
+		vector<Undead> GetSpellSl() { return this->slaves; }
+		void SetSpellLvl(vector<Undead> Sl) { this->slaves = Sl; }
 		virtual void set_date(Spell data);
 		virtual void make_mage(Necromancer&, Enemy*&);
 		virtual void update_spell();
 	};
 
 	class curse :public ISpells<Enemy*> {
-	private:
-		Spell stats;
 	public:
 		curse();
 		virtual Spell get_data();
@@ -29,8 +31,6 @@ namespace necro {
 		virtual void update_spell();
 	};
 	class necromancy : public ISpells<Enemy*> {
-	private:
-		Spell stats;
 	public:
 		necromancy();
 		virtual Spell get_data();
@@ -42,8 +42,6 @@ namespace necro {
 
 	};
 	class morphism : public ISpells<Enemy*> {
-	private:
-		Spell stats;
 	public:
 		morphism();
 		virtual Spell get_data();

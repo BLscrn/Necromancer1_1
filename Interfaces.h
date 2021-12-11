@@ -126,17 +126,40 @@ namespace necro {
 	};
 	class Object {
 	protected:
-		Coordinate coor;
+		//Coordinate coor;
+		int x;
+		int y;
 	public:
 		virtual bool move(Lvl, char) = 0;
 		virtual Coordinate get_dateCO() = 0;
 		virtual void set_dateCO(Coordinate) = 0;
+		void SetCooX(int x1) { this->x = x1; }
+		int GetCooX() { return this->x; }
+		void SetCooY(int y1) { this->y = y1; }
+		int GetCooY() { return this->y; }
 	};
 
 	class ICreature : public Object {
 	protected:
-		Creature cr_stats;
+		//Creature cr_stats;
+		std::string name;
+		double max_health;
+		double real_health;
+		std::string fraction;
+		double level;
 	public:
+		void SetCrName(std::string Name) { this->name = Name; }
+		std::string GetCrName() { return this->name; }
+		void SetCrM_health(double MaxHealth) { this->max_health = MaxHealth; }
+		double GetCrM_health() { return this->max_health; }
+		void SetCrR_health(double RealHealth) { this->real_health = RealHealth; }
+		double GetCrR_health() { return this->real_health; }
+		void SetCrFraction(std::string Fraction) { this->fraction = Fraction; }
+		std::string GetCrFraction() { return this->fraction; }
+		void SetCrLvl(double Lvl) { this->level = Lvl; }
+		double GetCrLvl() { return this->level; }
+
+
 		virtual Creature get_dateC() = 0;
 		virtual void set_dateC(Creature) = 0;
 		virtual Coordinate death_cr() = 0;
@@ -144,19 +167,39 @@ namespace necro {
 
 	class Summoner:public virtual ICreature {
 	protected:
-		summoner su_stats;
+		//summoner su_stats;
+		bool summoner;
+		int chance;
 	public:
 		virtual DLenemy_data Call_cr() = 0;
+		void SetSummSu(bool Summ) { this->summoner = Summ; }
+		bool GetSummSu() { return this->summoner; }
+		void SetSummCh(int Chance) { this->chance = Chance; }
+		int GetSumCh() { return this->chance; }
 	};
 
 
 	class Enemy :public virtual ICreature {
 	protected:
-		enemy en_satas;
+		//enemy en_satas;
+		double damage;
+		int chance_F;
+		bool status;
 		bool statusL;
 		std::string type;
 	public:
 		Enemy();
+		void SetEnemyDam(double Dam) { this->damage = Dam; }
+		double GetEnemyDam() { return this->damage; }
+		void SetEnemyCh(int Ch) { this->chance_F = Ch; }
+		int GetEnemyCh() { return this->chance_F; }
+		void SetEnemySt(bool St) { this->status = St; }
+		bool GetEnemySt() { return this->status; }
+		void SetEnemyStL(bool St) { this->statusL = St; }
+		bool GetEnemyStL() { return this->statusL; }
+		void SetEnemyType(std::string Type) { this->type = Type; }
+		std::string	GetEnemyType() { return this->type; }
+
 		virtual DLenemy_data get_data() = 0;
 		virtual void set_data(DLenemy_data data) = 0;
 		virtual Coordinate death_cr() = 0;
@@ -199,12 +242,24 @@ namespace necro {
 	};
 	class Undead {
 	private:
-		Slave Undead_stats;
+		//Slave Undead_stats;
+		std::string name;
+		double damage_kof;
+		std::string fraction;
+		bool can_I;
 	public:
 		Undead();
 		Undead(const Undead& other);
 		Undead& operator = (const Undead other);
 		virtual Slave get_data();
+		std::string GetUndName() { return this->name; }
+		void SetUndName(std::string Name) { this->name = Name; }
+		double GetUndKof() { return this->damage_kof; }
+		void SetUndKof(double dam_kof) { this->damage_kof = dam_kof; }
+		std::string GetUndFract() { return this->fraction; }
+		void SetUndFract(std::string Fract) { this->fraction = Fract; }
+		bool GetUndCan() { return this->can_I; }
+		void SetUndKof(bool can) { this->can_I = can; }
 		virtual void set_data(Slave);
 		virtual DEnemy* become_slave(Creature Who, Enemy&);
 		virtual void become_available();
