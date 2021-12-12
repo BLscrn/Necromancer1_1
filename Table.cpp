@@ -2,7 +2,6 @@
 #include "Interfaces.h"
 #include "Table.h"
 #include "Necro.h"
-//#include "Enemy.h"
 #include <stdexcept>
 
 
@@ -41,20 +40,21 @@ namespace necro {
 			}
 			get_number(ch, "Make choice:");
 
-			Necro_data stats1 = Necro.get_data();
-			if (stats1.real_mana - (40 - 40 * (0.1 * this->level)) < 0) {
+			//Necro_data stats1 = Necro.get_data();
+			if (Necro.GetNecrR_mana() - (40 - 40 * (0.1 * this->level)) < 0) {
 				throw std::logic_error("not enought mana");
 				
 			}
-			stats1.real_mana -= (40 - 40 * (0.1 * this->level));
-			Necro.set_data(stats1);
+			Necro.SetNecrR_mana(Necro.GetNecrR_mana() - (40 - 40 * (0.1 * this->level)));
+			//Necro.set_data(stats1);
 			if (ch == 1) {
-				Creature stats;
-				stats = Necro.get_dateC();
-
-				stats.real_health = (Target->get_dateC().max_health * (this->level) / 10 + 5 * Target->get_dateC().level) + stats.real_health
-			> stats.max_health ? stats.max_health : (Target->get_dateC().max_health * (this->level) / 10 + 5 * Target->get_dateC().level) + stats.real_health;
-				Necro.set_dateC(stats);
+				//Creature stats;
+				//stats = Necro.get_dateC();
+				Necro.GetCrM_health();
+				//Necro.SetCrR_health();
+				Necro.SetCrR_health((Target->GetCrM_health() * (this->level) / 10 + 5 * Target->GetCrLvl()) + Necro.GetCrR_health()
+			> Necro.GetCrM_health() ? Necro.GetCrM_health() : (Target->GetCrM_health() * (this->level) / 10 + 5 * Target->GetCrLvl()) + Necro.GetCrR_health());
+				//Necro.set_dateC(stats);
 			}
 			else if (ch == 2) {
 				Necro_data stats = Necro.get_data();
@@ -63,10 +63,12 @@ namespace necro {
 				Necro.set_data(stats);
 
 			}
-			DLenemy_data data = Target->get_data();
-			data.statusL = 0;
-			data.cr_stats.max_health = -1;
-			Target->set_data(data);
+			//DLenemy_data data = Target->get_data();
+			//data.statusL = 0;
+			Target->SetEnemyStL(0);
+			//data.cr_stats.max_health = -1;
+			Target->SetEnemyStL(-1);
+			//Target->set_data(data);
 
 		}
 		else {
