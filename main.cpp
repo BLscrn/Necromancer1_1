@@ -114,6 +114,27 @@ int main() {
 	++test_i;
 	--test_i1;
 
+	/*
+	DLenemy_data d_en;
+	d_en.coor_stats.x = 0;
+	d_en.coor_stats.y = 0;
+	d_en.cr_stats.fraction = "qwerty";
+	d_en.cr_stats.level = 2;
+	d_en.cr_stats.max_health = 100;
+	d_en.cr_stats.name = "en1";
+	d_en.cr_stats.real_health = 100;
+	d_en.en_satas.chance = 0.5;
+	d_en.en_satas.damage = 50;
+	d_en.en_satas.status = 1;
+	d_en.statusL = 1;
+	d_en.su_stats.chance = 0;
+	d_en.su_stats.summoner = 0;
+	d_en.type = "1";
+	LEnemy En1(d_en);
+	d_en.cr_stats.name = "en2";
+	LEnemy En2(d_en);
+	En1.cause_dam(En2);
+	*/
 	//+
 	DLenemy_data mob_1;
 	mob_1.cr_stats.fraction = "Holy orden";

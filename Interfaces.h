@@ -61,7 +61,7 @@ namespace necro {
 	struct summoner
 	{
 		bool summoner;
-		int chance;
+		double chance;
 	};
 
 	struct Golem_data

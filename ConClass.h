@@ -8,11 +8,9 @@ namespace necro {
 	private:
 		TYP* this_el;
 	public:
-		// êîíñòðóêòîðû
 		Iterator() : this_el(nullptr) {}
 		Iterator(TYP* val) : this_el(val) {}
 		~Iterator() {}
-		// îïåðàòîðû ñðàâíåíèÿ
 		bool operator !=(const Iterator<TYP>& other) const {
 			if (this_el == nullptr || other.this_el == nullptr) {
 				return false;
@@ -57,14 +55,12 @@ namespace necro {
 				return (this->this_el <= other.this_el);
 			}
 		}
-		// äîñòóï ê ýëåìåíòàì ìàññèâà ïî óêàçàòåëþ
 		TYP& operator *() {
 			return *this->this_el;
 		}
 		TYP* operator ->() {
 			return this->this_el;
 		}
-		// ïåðåìåùåíèå èòåðàòîðà íà ñëåäóþùóþ ïîçèöèþ â ìàññèâå
 		Iterator<TYP>& operator ++() {
 			++this->this_el;
 			return *this;
