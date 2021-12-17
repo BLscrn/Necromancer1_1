@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdio.h>
-#include <conio.h>
+#include <curses.h>
 #include "Map.h"
 #include "ConClass.h"
 namespace necro {

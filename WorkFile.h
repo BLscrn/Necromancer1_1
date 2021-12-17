@@ -2,7 +2,7 @@
 #define WORKFILE
 #include <iostream>
 #include <stdio.h>
-#include <conio.h>
+#include <curses.h>
 #include "Interfaces.h"
 #include "Necro.h"
 #include "Table.h"

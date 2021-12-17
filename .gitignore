@@ -10,3 +10,7 @@ result
 latex/
 html/
 packages/
+.idea/
+CMakeLists.txt
+cmake-build-debug/
+img/

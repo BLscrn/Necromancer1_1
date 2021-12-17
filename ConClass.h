@@ -116,16 +116,14 @@ namespace necro {
 
 		vector(int l) {
 			if (l >= 0) {
-				if (l > 0) {
-					mas = new T[l];
-					len = l;
-				}
-				else {
-					len = 0;
-					mas = nullptr;
-				}
-			}
-			else { return nullptr; }
+                if (l > 0) {
+                    mas = new T[l];
+                    len = l;
+                } else {
+                    len = 0;
+                    mas = nullptr;
+                }
+            }
 		}
 
 
@@ -196,18 +194,18 @@ namespace necro {
 			this->mas[this->len - 1] = new_el;
 		}
 
-		typedef Iterator<T> Iterator;
-		Iterator begin() const {
-			return Iterator(this->mas);
+		typedef Iterator<T> iterator;
+		iterator begin() const {
+			return iterator(this->mas);
 		}
-		Iterator end() const {
-			return Iterator(this->mas + (this->len));
+		iterator end() const {
+			return iterator(this->mas + (this->len));
 		}
-		Iterator find(int num) const {
+		iterator find(int num) const {
 			if (num < 0 || num > this->len) {
 				num = this->len;
 			}
-			return Iterator(this->mas + num - 1);
+			return iterator(this->mas + num - 1);
 		}
 	};
 

@@ -9,9 +9,34 @@
 #include <map>
 #include <string>
 #include "Map.h"
+#include <SFML/Graphics.hpp>
 using namespace necro;
 int main() {
-	
+
+
+    sf::RenderWindow window(sf::VideoMode(15 * 50, 15 * 50), "NecroGame");
+    sf::Image cat;
+    cat.loadFromFile("../img/cat.jpg");
+    sf::Texture catTexture;
+    catTexture.loadFromImage(cat);
+    sf::Sprite catSpite;
+    catSpite.setTexture(catTexture);
+    catSpite.setPosition(15,15);
+    while (window.isOpen()) {
+
+        sf::Event event{};
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        window.draw(catSpite);
+        window.display();
+
+    }
+
+/*
 	vector<DLenemy_data> Enemy_NG;
 	vector<Golem_data> Golems;
 	vector<Slave> Slaves;
@@ -134,8 +159,7 @@ int main() {
 	d_en.cr_stats.name = "en2";
 	LEnemy En2(d_en);
 	En1.cause_dam(En2);
-	*/
-	//+
+
 	DLenemy_data mob_1;
 	mob_1.cr_stats.fraction = "Holy orden";
 	mob_1.cr_stats.level = 2;
@@ -165,7 +189,6 @@ int main() {
 	mob2->set_data(mob_1);
 	safe_EnemyF(Enemy_NG, "EnemyNG.bin");
 	Enemy_NG = get_EnemyF("EnemyNG.bin");
-	LEnemy  qwerty = Enemy_NG[1];
 
 	try {
 		mob1->cause_dam(necr1);
@@ -220,6 +243,6 @@ int main() {
 	catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
-	
+	*/
 	return 0;
 }
