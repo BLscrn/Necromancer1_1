@@ -67,7 +67,7 @@ namespace necro {
 			//data.statusL = 0;
 			Target->SetEnemyStL(0);
 			//data.cr_stats.max_health = -1;
-			Target->SetEnemyStL(-1);
+			Target->SetCrM_health(-1);
 			//Target->set_data(data);
 
 		}
