@@ -1,6 +1,7 @@
 //
 // Created by kirill on 17.12.2021.
 //
+/*
 #ifndef NECROMANCER_GAME_H
 #define NECROMANCER_GAME_H
 #include <iostream>
@@ -27,3 +28,4 @@ namespace  necro {
 
 }
 #endif //NECROMANCER_GAME_H
+*/

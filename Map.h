@@ -10,7 +10,7 @@ namespace necro {
 
 	struct Field {
 		Coordinate coo;
-		int What_it; // 0 - blank,1 - lava, 2 - ladder, 3 - Odoor, 4- Cdoor , 5 - creature, 6 - wall, 7 - essence
+		int What_it; // 0 - blank,1 - wall, 2 - ladder, 3 - Odoor, 4- Cdoor , 5 - creature, 6 - lava, 7 - essence
 		int distance;
 		Field* previous;
 		Field* next;

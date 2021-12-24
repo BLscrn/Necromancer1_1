@@ -9,240 +9,290 @@
 #include <map>
 #include <string>
 #include "Map.h"
+#include <unistd.h>
 #include <SFML/Graphics.hpp>
 using namespace necro;
 int main() {
+    const int HEIGHT_MAP = 32;//размер карты высота
+    const int WIDTH_MAP = 32;//размер карты ширина
+    Lvl lvl1 = readFlvl("map.bin");
+    vector<DLenemy_data> endata_mas;
+
+    endata_mas = get_EnemyF("EnemyNG.bin");
+    vector<Enemy*> en_mas;
+    en_mas.resize(endata_mas.getlen());
+    for(int i = 0; i < endata_mas.getlen(); i++){
+        en_mas[i] = new LEnemy(endata_mas[i]);
+    }
+    for(int i = 0; i < endata_mas.getlen(); i++){
+        en_mas[i]->SetSprite("../img/knight1.png");
+    }
+    vector<ISpells<Enemy*>*> table;
+    table.resize(4);
+    table[0] = new desiccation;
+    table[1] = new curse;
+    table[2] = new necromancy;
+    table[3] = new morphism;
 
 
-    sf::RenderWindow window(sf::VideoMode(15 * 50, 15 * 50), "NecroGame");
-    sf::Image cat;
-    cat.loadFromFile("../img/cat.jpg");
-    sf::Texture catTexture;
-    catTexture.loadFromImage(cat);
-    sf::Sprite catSpite;
-    catSpite.setTexture(catTexture);
-    catSpite.setPosition(15,15);
-    while (window.isOpen()) {
+    vector<Slave> Slaves;
+   /* Slaves.resize(2);
+    Slaves[0].name = "Zombie";
+    Slaves[0].fraction = "Other";
+    Slaves[0].can_I = 1;
+    Slaves[0].damage_kof = 0.6;
 
-        sf::Event event{};
-        while (window.pollEvent(event)) {
+    Slaves[1].name = "Vampire";
+    Slaves[1].fraction = "Other";
+    Slaves[1].can_I = 1;
+    Slaves[1].damage_kof = 0.8;
+
+    safe_SlavesF(Slaves,"Slaves.bin");
+    */
+    Slaves = get_SlavesF("Slaves.bin");
+    vector<Undead> sl_mas;
+    sl_mas.resize(Slaves.getlen());
+    for(int i = 0 ; i < Slaves.getlen();i++){
+        sl_mas[i].set_data(Slaves[i]);
+    }
+    table[0]->SetSlaves(sl_mas);
+    table[1]->SetSlaves(sl_mas);
+    table[2]->SetSlaves(sl_mas);
+    table[3]->SetSlaves(sl_mas);
+
+
+    sf::String TileMap[HEIGHT_MAP] = {
+            "11111111111111111111111111111111",
+            "17000071210000000000000001000001",
+            "10077001010000000600000001000001",
+            "10077001010000000000060003000001",
+            "10000001010000000000000001000001",
+            "10077001040000600000000601116111",
+            "10700701010000000000000001770001",
+            "10000001010060000000066661770001",
+            "11111141010000000600066661000001",
+            "10010001010000000000066661000001",
+            "10010001011141111111111111110001",
+            "10010001011101111111111100010001",
+            "10014111411101111111111101010001",
+            "10000000011101111111111101010001",
+            "10000000011101111111111101000001",
+            "10000000011101111111111101110001",
+            "10000000011101111111111100060001",
+            "11111111111101111111111101111111",
+            "10000000040100000000001100040771",
+            "10100000010100000000000111110001",
+            "10100000010100000000000300000001",
+            "10141114110100066666000111111101",
+            "10100100010100066666000100400101",
+            "10100100710000066666000100100101",
+            "10111111110000066666000300400401",
+            "10000000010000066666000111111111",
+            "11111111010000066666000100000001",
+            "10000001010000066666000100707071",
+            "10011121010000066666000300077701",
+            "10011111010000000000000100070701",
+            "10000004010000000000000100000001",
+            "11111111111111111111111111111111",
+    };
+
+    Level map1(lvl1);
+
+
+    sf::Image wall;
+    wall.loadFromFile("../img/wall1.png");
+    sf::Texture wallT;
+    wallT.loadFromImage(wall);
+    sf::Sprite wallS;
+    wallS.setTexture(wallT);
+
+
+    sf::Image floor;
+    floor.loadFromFile("../img/floor1.png");
+    sf::Texture floorT;
+    floorT.loadFromImage(floor);
+    sf::Sprite floorS;
+    floorS.setTexture(floorT);
+
+
+    sf::Image door;
+    door.loadFromFile("../img/door1.png");
+    sf::Texture doorT;
+    doorT.loadFromImage(door);
+    sf::Sprite doorS;
+    doorS.setTexture(doorT);
+
+    sf::Image essence;
+    essence.loadFromFile("../img/essence1.png");
+    sf::Texture essenceT;
+    essenceT.loadFromImage(essence);
+    sf::Sprite essenceS;
+    essenceS.setTexture(essenceT);
+
+
+    sf::Image lava;
+    lava.loadFromFile("../img/lava1.png");
+    sf::Texture lavaT;
+    lavaT.loadFromImage(lava);
+    sf::Sprite lavaS;
+    lavaS.setTexture(lavaT);
+
+    sf::Image ladder;
+    ladder.loadFromFile("../img/ladder1.png");
+    sf::Texture ladderT;
+    ladderT.loadFromImage(ladder);
+    sf::Sprite ladderS;
+    ladderS.setTexture(ladderT);
+
+    sf::Image zb;
+    zb.loadFromFile("../img/corpse1.png");
+    sf::Texture zbT;
+    zbT.loadFromImage(zb);
+    sf::Sprite zbS;
+    zbS.setTexture(zbT);
+
+    sf::Image spell;
+    spell.loadFromFile("../img/mage1.png");
+    sf::Texture spellT;
+    spellT.loadFromImage(spell);
+    sf::Sprite spellS;
+    spellS.setTexture(spellT);
+
+    zbS.setPosition(2*32,3*32);
+    sf::RenderWindow window(sf::VideoMode(32*32, 32*32), "My window");
+
+    // run the program as long as the window is open
+    Necromancer necr1;
+    necr1.SetCooX(2);
+    necr1.SetCooY(2);
+    int x1,y1,num;
+    necr1.SetNecrM_mana(100000);
+    necr1.SetNecrR_mana(100000);
+    while (window.isOpen())
+    {
+
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
-        window.clear();
-        window.draw(catSpite);
-        window.display();
 
+        necr1.GetSprite().setPosition( necr1.GetCooY()* 32,necr1.GetCooX()* 32);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                necr1.move(map1.get_data(),'w');
+                necr1.GetSprite().setPosition(necr1.GetCooY()* 32,necr1.GetCooX()* 32);
+                window.draw(necr1.GetSprite());
+                sleep(1);
+                std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
+                std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+              necr1.move(map1.get_data(),'s');
+                necr1.GetSprite().setPosition(necr1.GetCooY()* 32,necr1.GetCooX()* 32);
+                window.draw(necr1.GetSprite());
+                sleep(1);
+                std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
+                std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+                necr1.move(map1.get_data(),'a');
+                necr1.GetSprite().setPosition(necr1.GetCooY()* 32,necr1.GetCooX()* 32);
+                window.draw(necr1.GetSprite());
+                sleep(1);
+                std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
+                std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+                necr1.move(map1.get_data(),'d');
+                necr1.GetSprite().setPosition(necr1.GetCooX()* 32,necr1.GetCooY()* 32);
+                window.draw(necr1.GetSprite());
+                sleep(1);
+                std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
+                std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+        }
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
+            y1 = sf::Mouse::getPosition(window).x / 32;
+            x1 = sf::Mouse::getPosition(window).y / 32;
+            spellS.setPosition(y1*32,x1*32);
+            window.draw(spellS);
+            window.display();
+
+            num = -1;
+            for(int i = 0; i < en_mas.getlen();i++){
+                if(en_mas[i]->GetCooX() == x1 && en_mas[i]->GetCooY() == y1){
+                    num = i;
+                }
+            }
+            sleep(1);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
+            sleep(1);
+            table[0]->make_mage(necr1,en_mas[num]);
+        }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+            sleep(1);
+            table[1]->make_mage(necr1,en_mas[num]);
+        }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
+            sleep(1);
+            table[2]->make_mage(necr1, en_mas[num]);
+            if(en_mas[num]->GetEnemyType() == "Zombie"){
+                en_mas[num]->SetSprite("../img/zombie1.png");
+            }else if(en_mas[num]->GetEnemyType() == "Vampire"){
+                en_mas[num]->SetSprite("../img/vampire1.png");
+            }
+        }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+            sleep(1);
+            table[3]->make_mage(necr1, en_mas[num]);
+            if(en_mas[num]->GetEnemyType() == "Zombie"){
+                en_mas[num]->SetSprite("../img/zombie1.png");
+            }else if(en_mas[num]->GetEnemyType() == "Vampire"){
+                en_mas[num]->SetSprite("../img/vampire1.png");
+            }
+        }
+
+        for(int i = 0; i < en_mas.getlen();i++){
+            if(en_mas[i]->GetCrR_health() <= 0){
+                en_mas[i]->death_cr();
+            }
+        }
+
+
+        for(int i = 0; i < en_mas.getlen();i++){
+            if(en_mas[i]->GetEnemyStL() == 0 && en_mas[i]->GetCrM_health() > 0){
+                en_mas[i]->SetSprite("../img/corpse1.png");
+            }else if(en_mas[i]->GetEnemyStL() == 0 && en_mas[i]->GetCrM_health() == -1){
+                en_mas.remove(i);
+            }
+        }
+
+
+            window.clear(sf::Color::Black);
+
+        for (int i = 0; i < HEIGHT_MAP; i++)
+            for (int j = 0; j < WIDTH_MAP; j++)
+            {
+                if (TileMap[i][j] == '1')  {wallS.setTexture(wallT); wallS.setPosition(j * 32, i * 32); window.draw(wallS);}
+                if (TileMap[i][j] == '0')  {floorS.setTexture(floorT); floorS.setPosition(j * 32, i * 32); window.draw(floorS);}
+                if ((TileMap[i][j] == '3' || TileMap[i][j] == '4' )) {doorS.setTexture(doorT); doorS.setPosition(j * 32, i * 32); window.draw(doorS);}
+                if (TileMap[i][j] == '2')  {ladderS.setTexture(ladderT); ladderS.setPosition(j * 32, i * 32);window.draw(ladderS);}
+                if (TileMap[i][j] == '6')  {lavaS.setTexture(lavaT); lavaS.setPosition(j * 32, i * 32); window.draw(lavaS);}
+                if (TileMap[i][j] == '7')  {essenceS.setTexture(essenceT); essenceS.setPosition(j * 32, i * 32); window.draw(essenceS);}
+            }
+
+        necr1.GetSprite().setPosition( necr1.GetCooY()* 32,necr1.GetCooX()* 32);
+        window.draw(necr1.GetSprite());
+        window.draw(zbS);
+        for(int i = 0 ; i < en_mas.getlen();i++){
+            en_mas[i]->GetSprite().setPosition(en_mas[i]->GetCooY()* 32,en_mas[i]->GetCooX()* 32);
+            window.draw(en_mas[i]->GetSprite());
+        }
+        window.display();
     }
 
-/*
-	vector<DLenemy_data> Enemy_NG;
-	vector<Golem_data> Golems;
-	vector<Slave> Slaves;
-	vector<Spell> Spells;
-	std::map<std::string, ISpells<Enemy*>*> test;
-	ISpells<Enemy*>* first_s = new desiccation;
-	ISpells<Enemy*>* second_s = new curse;
-	ISpells<Enemy*>* third_s = new necromancy;
-	ISpells<Enemy*>* fourth_s = new morphism;
-	Spells.push_back(first_s->get_data());
-	Spells.push_back(second_s->get_data());
-	Spells.push_back(third_s->get_data());
-	Spells.push_back(fourth_s->get_data());
-	safe_SpellF(Spells, "Spells.bin");
-	Spells = get_SpellF("Spells.bin");
-
-	test.insert(std::pair<std::string, ISpells<Enemy*>*>("desiccation", first_s));
-	test.insert(std::pair<std::string, ISpells<Enemy*>*>("curse", second_s));
-	test.insert(std::pair<std::string, ISpells<Enemy*>*>("necromancy", third_s));
-	test.insert(std::pair<std::string, ISpells<Enemy*>*>("morphism", fourth_s));
-
-	Level lvl1(10, 10);
-	Lvl hlpL = lvl1.get_data();
-	hlpL.field[2][4].What_it = 6;
-	hlpL.field[3][3].What_it = 6;
-	hlpL.field[4][3].What_it = 6;
-	lvl1.set_data(hlpL);
-	Coordinate begin;
-	begin.x = 1;
-	begin.y = 2;
-	Coordinate end;
-	end.x = 3;
-	end.y = 4;
-	lvl1.find_way(begin, end);
-	safe_LvlF(lvl1.get_data(), "lvl1.bin");
-	Level lvl12(get_LvlF("lvl1.bin"));
-	Lvl help_lvl = lvl12.get_data();
-	Field end1 = lvl12.get_data().field[3][4];
 
 
-
-	Necromancer necr1;
-	safe_NecroF(necr1.get_data(), "NecroF.bin");
-	Necromancer necr2(get_NecroF("NecroF.bin"));
-
-
-	//necromancy spel1;
-	//morphism spel2;
-	Slave cr_1;
-	Undead cr1;
-	Golem_data golem1;
-	Golem_data golem_data;
-	golem_data.coo_stats.x = 0;
-	golem_data.coo_stats.y = 0;
-	golem_data.cr_stats.fraction = "golem";
-	golem_data.cr_stats.level = 1;
-	golem_data.cr_stats.max_health = 150;
-	golem_data.cr_stats.real_health = 150;
-	golem_data.cr_stats.name = "Grock";
-	golem_data.en_satas.chance = 100;
-	golem_data.en_satas.damage = 40;
-	golem_data.en_satas.status = 0;
-	golem_data.ignore_damm = 30;
-	golem_data.type = "stone";
-	Golems.push_back(golem_data);
-	safe_GolemF(Golems, "Golems.bin");
-	Golems = get_GolemF("Golems.bin");
-
-	cr_1.can_I = 1;
-	cr_1.damage_kof = 0.2;
-	cr_1.fraction = "Other";
-	cr_1.name = "Gost";
-	Slaves.push_back(cr_1);
-	cr1.set_data(cr_1);
-	Spell help = (test["necromancy"]->get_data());
-
-
-
-
-	cr_1.can_I = 1;
-	cr_1.damage_kof = 0.4;
-	cr_1.fraction = "Other";
-	cr_1.name = "Lesha";
-	Slaves.push_back(cr_1);
-	safe_SlavesF(Slaves, "Slaves.bin");
-	Slaves = get_SlavesF("Slaves.bin");
-	help.slaves.push_back(cr1);
-	cr_1 = Slaves[1];
-	cr1.set_data(cr_1);
-	help.slaves.push_back(cr1);
-	test["necromancy"]->set_date(help);
-	test["morphism"]->set_date(help);
-
-
-	//+
-	Iterator<Undead> test_i(help.slaves.begin());
-	Iterator<Undead> test_i1;
-	test_i1 = help.slaves.end();
-	std::cout << (test_i1 == test_i);
-	++test_i;
-	--test_i1;
-
-	/*
-	DLenemy_data d_en;
-	d_en.coor_stats.x = 0;
-	d_en.coor_stats.y = 0;
-	d_en.cr_stats.fraction = "qwerty";
-	d_en.cr_stats.level = 2;
-	d_en.cr_stats.max_health = 100;
-	d_en.cr_stats.name = "en1";
-	d_en.cr_stats.real_health = 100;
-	d_en.en_satas.chance = 0.5;
-	d_en.en_satas.damage = 50;
-	d_en.en_satas.status = 1;
-	d_en.statusL = 1;
-	d_en.su_stats.chance = 0;
-	d_en.su_stats.summoner = 0;
-	d_en.type = "1";
-	LEnemy En1(d_en);
-	d_en.cr_stats.name = "en2";
-	LEnemy En2(d_en);
-	En1.cause_dam(En2);
-
-	DLenemy_data mob_1;
-	mob_1.cr_stats.fraction = "Holy orden";
-	mob_1.cr_stats.level = 2;
-	mob_1.cr_stats.max_health = 60;
-	mob_1.cr_stats.name = "knight";
-	mob_1.cr_stats.real_health = 60;
-	mob_1.en_satas.chance = 60;
-	mob_1.en_satas.damage = 60;
-	mob_1.en_satas.status = 0;
-	mob_1.statusL = 1;
-	mob_1.su_stats.chance = 20;
-	mob_1.su_stats.summoner = 0;
-	mob_1.type = "";
-	mob_1.coor_stats.x = 1;
-	mob_1.coor_stats.y = 0;
-	Enemy* mob1 = new LEnemy;
-	mob1->set_data(mob_1);
-	Enemy_NG.push_back(mob_1);
-	mob_1.cr_stats.name = "living Skeleton";
-	mob_1.cr_stats.max_health = 100;
-	mob_1.cr_stats.max_health = 100;
-	mob_1.en_satas.chance = 100;
-	mob_1.en_satas.damage = 100;
-	mob_1.cr_stats.fraction = "Evil";
-	Enemy_NG.push_back(mob_1);
-	Enemy* mob2 = new LEnemy; 
-	mob2->set_data(mob_1);
-	safe_EnemyF(Enemy_NG, "EnemyNG.bin");
-	Enemy_NG = get_EnemyF("EnemyNG.bin");
-
-	try {
-		mob1->cause_dam(necr1);
-	}
-	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-	try {
-		test["necromancy"]->make_mage(necr1, mob1);
-	}
-	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-	//desiccation spel4;
-
-	test["morphism"]->update_spell();
-	//spel2.make_mage(necr1, mob1);
-	//curse spel3;
-	//spel2.make_mage(necr1, mob1);
-	test["curse"]->update_spell();
-	test["curse"]->update_spell();
-	test["curse"]->update_spell();
-	test["curse"]->update_spell();
-	try {
-		test["curse"]->make_mage(necr1, mob1);
-		test["curse"]->make_mage(necr1, mob1);
-	}
-	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-
-	if (mob1->get_dateC().real_health <= 0) {
-		mob1->death_cr();
-	}
-	
-	Necro_data data = necr1.get_data();
-	data.real_mana = 100;
-	necr1.set_data(data);
-	try {
-		test["necromancy"]->make_mage(necr1, mob1);
-	}
-	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-	data = necr1.get_data();
-	data.real_mana = 100;
-	necr1.set_data(data);
-
-	try {
-		test["morphism"]->make_mage(necr1, mob1);
-	}
-	catch (const std::exception& e) {
-		std::cout << e.what() << std::endl;
-	}
-	*/
 	return 0;
 }

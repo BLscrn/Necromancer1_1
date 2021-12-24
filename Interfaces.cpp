@@ -10,20 +10,20 @@ namespace necro {
 
 
 	bool Object::move(Lvl lvl, char way) {
-		if (way == 'w' && this->y - 1 > -1 && lvl.field[this->x][this->y - 1].What_it < 2) {
+		if (way == 'w' && this->y - 1 > -1 && lvl.field[this->x][this->y - 1].What_it != 1) {
 			this->y -= 1;
 			return true;
 		}
-		else if (way == 'd' && this->x + 1 < lvl.size_x && lvl.field[this->x + 1][this->y].What_it < 2) {
+		else if (way == 'd' && this->x + 1 < lvl.size_x && lvl.field[this->x + 1][this->y].What_it != 1) {
 			this->x += 1;
 			return true;
 		}
-		else if (way == 's' && this->y + 1 < lvl.size_y && lvl.field[this->x][this->y + 1].What_it < 2) {
+		else if (way == 's' && this->y + 1 < lvl.size_y && lvl.field[this->x][this->y + 1].What_it != 1) {
 			this->y += 1;
 			return true;
 		}
-		else if (way == 'a' && this->x - 1 > -1 && lvl.field[this->x - 1][this->y].What_it < 2) {
-			this->y -= 1;
+		else if (way == 'a' && this->x - 1 > -1 && lvl.field[this->x - 1][this->y].What_it != 1) {
+			this->x -= 1;
 			return true;
 		}
 		return false;
@@ -375,7 +375,7 @@ namespace necro {
 				stats.cr_stats.max_health *= this->damage_kof;
 				stats.cr_stats.fraction = Who.fraction;
 				stats.type = this->name;
-				stats.statusL = 0;
+				stats.statusL = 1;
 
 				DEnemy* Demon = new DEnemy;
 				Demon->set_data(stats);

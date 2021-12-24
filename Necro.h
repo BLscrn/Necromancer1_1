@@ -2,12 +2,16 @@
 #define NECRO
 #include <iostream>
 #include "Interfaces.h"
+#include <SFML/Graphics.hpp>
 
 namespace necro {
 
 	class Necromancer : public IWork_data<Necro_data>, public ICreature {
 	private:
 		//Creature cr_stats;
+        sf::Image nec;
+        sf::Texture necT;
+        sf::Sprite necS;
 		double max_mana;
 		double real_mana;
 		double exp;
@@ -16,6 +20,7 @@ namespace necro {
 	public:
 		Necromancer();
 		Necromancer(Necro_data);
+        sf::Sprite& GetSprite(){return this->necS;}
 		double GetNecrM_mana() { return this->max_mana; }
 		void SetNecrM_mana(double Max) { this->max_mana = Max; }
 		double GetNecrR_mana() { return this->real_mana; }
@@ -42,6 +47,7 @@ namespace necro {
 		vector<Undead> slaves;
 	public:
 		virtual void make_mage(Necromancer&, T1&) = 0;
+        void SetSlaves(vector<Undead> Sl){this->slaves = Sl;};
 		virtual void update_spell() = 0;
 		virtual Spell get_data() = 0;
 		virtual void set_date(Spell) = 0;

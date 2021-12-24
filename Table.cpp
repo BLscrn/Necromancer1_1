@@ -191,7 +191,7 @@ namespace necro {
 			throw std::logic_error("You can't use this slave");
 
 		}
-		if (Target->get_data().statusL == 1) {
+		if (Target->get_data().type == "") {
 			throw std::logic_error("Enemy is alive");
 
 		}

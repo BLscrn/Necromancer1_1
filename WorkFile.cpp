@@ -6,6 +6,7 @@
 #include "Table.h"
 #include "WorkFile.h"
 #include "Map.h"
+#include <fstream>
 namespace necro {
 
 
@@ -295,4 +296,29 @@ namespace necro {
 		fclose(f);
 		return ret_lvl;
 	}
+    Lvl readFlvl(std::string fname){
+        std::ifstream f;
+        f.open("map.bin");
+        Lvl ret_lvl;
+        f >> ret_lvl.size_x;
+        f >> ret_lvl.size_y;
+        ret_lvl.field.resize(ret_lvl.size_x);
+        for (int i = 0; i < ret_lvl.size_x; i++) {
+            ret_lvl.field[i].resize(ret_lvl.size_y);
+        }
+        for (int i = 0; i < ret_lvl.size_x; i++) {
+            for (int j = 0; j < ret_lvl.size_y; j++) {
+                f >> ret_lvl.field[i][j].What_it;
+                ret_lvl.field[i][j].coo.x = i;
+                ret_lvl.field[i][j].coo.y = j;
+                ret_lvl.field[i][j].distance = -1;
+                ret_lvl.field[i][j].flag = false;
+                ret_lvl.field[i][j].next = nullptr;
+                ret_lvl.field[i][j].previous = nullptr;
+            }
+        }
+        f.close();
+        return ret_lvl;
+    }
 }
+

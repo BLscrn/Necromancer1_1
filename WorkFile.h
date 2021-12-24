@@ -23,6 +23,7 @@ namespace necro {
 	void safe_LvlF(Lvl lvl, std::string);
 	Lvl get_LvlF(std::string);
 
+    Lvl readFlvl(std::string fname);
 
 	void write_cr(All_Creature fdata, FILE* f);
 	All_Creature read_cr(FILE* f);

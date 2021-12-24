@@ -3,6 +3,7 @@
 #include <iostream>
 #include "ConClass.h"
 #include "Map.h"
+#include <SFML/Graphics.hpp>
 namespace necro {
 
 	template <class N>
@@ -181,6 +182,9 @@ namespace necro {
 
 	class Enemy :public virtual ICreature {
 	protected:
+        sf::Image enemy;
+        sf::Texture enemyT;
+        sf::Sprite enemyS;
 		//enemy en_satas;
 		double damage;
 		int chance_F;
@@ -189,6 +193,7 @@ namespace necro {
 		std::string type;
 	public:
 		Enemy();
+        sf::Sprite& GetSprite(){return this->enemyS;}
 		void SetEnemyDam(double Dam) { this->damage = Dam; }
 		double GetEnemyDam() { return this->damage; }
 		void SetEnemyCh(int Ch) { this->chance_F = Ch; }
@@ -199,7 +204,11 @@ namespace necro {
 		bool GetEnemyStL() { return this->statusL; }
 		void SetEnemyType(std::string Type) { this->type = Type; }
 		std::string	GetEnemyType() { return this->type; }
-
+        void SetSprite(std::string name){
+            this->enemy.loadFromFile(name);
+            this->enemyT.loadFromImage(enemy);
+            this->enemyS.setTexture(enemyT);
+        };
 		virtual DLenemy_data get_data() = 0;
 		virtual void set_data(DLenemy_data data) = 0;
 		virtual Coordinate death_cr() = 0;

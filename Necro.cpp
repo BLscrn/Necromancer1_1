@@ -5,6 +5,9 @@
 namespace necro {
 	// Necromancer:
 	Necromancer::Necromancer() {
+        this->nec.loadFromFile("../img/necr1.png");
+        this->necT.loadFromImage(nec);
+        this->necS.setTexture(necT);
 		this->fraction = "Necromancer squad";//"Necromancer_squad";
 		this->max_health = 100;
 		this->name = "Necromancer";
@@ -18,6 +21,9 @@ namespace necro {
 		this->real_mana = 100;
 	}
 	Necromancer::Necromancer(Necro_data data) {
+        this->nec.loadFromFile("../img/necr1.png");
+        this->necT.loadFromImage(nec);
+        this->necS.setTexture(necT);
 		this->fraction = data.cr_stats.fraction;
 		this->max_health = data.cr_stats.max_health;
 		this->name = data.cr_stats.name;
