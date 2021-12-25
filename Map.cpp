@@ -75,30 +75,38 @@ namespace necro {
 		help.x = Q[num]->coo.x;
 		help.y = Q[num]->coo.y;
 		help.x += 1;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) ) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
-			Q.push_back(&(this->field[help.x][help.y]));
+            if(check_Q(Q, help)) {
+                Q.push_back(&(this->field[help.x][help.y]));
+            }
 
 		}
 		help.x -= 2;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) ) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
-			Q.push_back(&(this->field[help.x][help.y]));
+            if(check_Q(Q, help)) {
+                Q.push_back(&(this->field[help.x][help.y]));
+            }
 		}
 		help.x += 1;
 		help.y += 1;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) ) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
-			Q.push_back(&(this->field[help.x][help.y]));
+            if(check_Q(Q, help)) {
+                Q.push_back(&(this->field[help.x][help.y]));
+            }
 		}
 		help.y -= 2;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) ) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
-			Q.push_back(&(this->field[help.x][help.y]));
+            if(check_Q(Q, help)) {
+                Q.push_back(&(this->field[help.x][help.y]));
+            }
 		}
 		Q[num]->flag = 1;
 		Q.remove(num);
@@ -162,7 +170,7 @@ namespace necro {
 	}
 	void Level::count_path(Field* prev, Field& cell) {
 		int help_dist;
-		help_dist = prev->What_it == 1 ? prev->distance + 6 : prev->distance + 1;
+		help_dist = prev->What_it == 6 ? prev->distance + 20 : prev->distance + 1;
 		if (cell.distance != -1) {
 			cell.distance = cell.distance < help_dist ? cell.distance : help_dist;
 			cell.previous = cell.distance < help_dist ? cell.previous : prev;

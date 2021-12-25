@@ -163,8 +163,8 @@ int main() {
 
     // run the program as long as the window is open
     Necromancer necr1;
-    necr1.SetCooX(13);
-    necr1.SetCooY(5);
+    necr1.SetCooX(2);
+    necr1.SetCooY(15);
     int x1,y1,num;
     necr1.SetNecrM_mana(100000);
     necr1.SetNecrR_mana(100000);
