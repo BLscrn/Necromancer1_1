@@ -299,6 +299,29 @@ int main() {
                         map1.find_way(begin,end);
                         way = chse_way(map1.get_data().field,begin,end);
                         en_mas[i]->move(map1.get_data(), way);
+                        if(way == '/'){
+                            for(int j = 0 ; j < en_mas.getlen();j++){
+                                if(en_mas[j]->GetCrFraction() == "Necromancer squad" && en_mas[j]->GetEnemyStL() == 1){
+                                    tr = en_mas[i]->cause_dam(*en_mas[j]);
+                                    if(tr == 1){break;}
+                                }
+                            }
+                            if(tr != 1) {
+                                for (int j = 0; j < en_mas.getlen(); j++) {
+                                    if (en_mas[j]->GetCrFraction() == "Necromancer squad" &&
+                                        en_mas[j]->GetEnemyStL() == 1) {
+                                        begin.x = en_mas[i]->GetCooX();
+                                        begin.y = en_mas[i]->GetCooY();
+                                        end.x = en_mas[j]->GetCooX();
+                                        end.y = en_mas[j]->GetCooY();
+                                        map1.find_way(begin, end);
+                                        way = chse_way(map1.get_data().field, begin, end);
+                                        en_mas[i]->move(map1.get_data(), way);
+                                        if (way != '/') { break; }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }else if(en_mas[i]->GetCrFraction() == "Necromancer squad" && en_mas[i]->GetEnemyStL() == 1){
                     int tr = 0;
