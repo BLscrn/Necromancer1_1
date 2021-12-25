@@ -90,7 +90,7 @@ int main() {
             "10000000010000066666000111111111",
             "11111111010000066666000100000001",
             "10000001010000066666000100707071",
-            "10011121010000066666000300077701",
+            "10011121010000066666000400077701",
             "10011111010000000000000100070701",
             "10000004010000000000000100000001",
             "11111111111111111111111111111111",
@@ -121,6 +121,14 @@ int main() {
     doorT.loadFromImage(door);
     sf::Sprite doorS;
     doorS.setTexture(doorT);
+
+    sf::Image odoor;
+    odoor.loadFromFile("../img/odoor1.png");
+    sf::Texture odoorT;
+    odoorT.loadFromImage(odoor);
+    sf::Sprite odoorS;
+    odoorS.setTexture(odoorT);
+
 
     sf::Image essence;
     essence.loadFromFile("../img/essence1.png");
@@ -303,7 +311,18 @@ int main() {
             window.close();
         }
 
-
+        if(map1.get_inf(necr1.GetCooX(),necr1.GetCooY()).What_it == 4){
+            Field help;
+            help.What_it = 3;
+            help.previous = nullptr;
+            help.distance = -1;
+            help.coo.x = necr1.GetCooX();
+            help.coo.y = necr1.GetCooY();
+            help.flag = 0;
+            help.next = nullptr;
+            map1.set_inf(necr1.GetCooX(),necr1.GetCooY(), help);
+            TileMap[necr1.GetCooX()][necr1.GetCooY()] = '3';
+        }
 
         if(Q == 1){
             for(int i = 0; i < en_mas.getlen();i++ ){
@@ -393,7 +412,8 @@ int main() {
             {
                 if (TileMap[i][j] == '1')  {wallS.setTexture(wallT); wallS.setPosition(j * 32, i * 32); window.draw(wallS);}
                 if (TileMap[i][j] == '0')  {floorS.setTexture(floorT); floorS.setPosition(j * 32, i * 32); window.draw(floorS);}
-                if ((TileMap[i][j] == '3' || TileMap[i][j] == '4' )) {doorS.setTexture(doorT); doorS.setPosition(j * 32, i * 32); window.draw(doorS);}
+                if ( TileMap[i][j] =='4') {doorS.setTexture(doorT); doorS.setPosition(j * 32, i * 32); window.draw(doorS);}
+                if (TileMap[i][j] == '3') {odoorS.setTexture(odoorT); odoorS.setPosition(j * 32, i * 32); window.draw(odoorS);}
                 if (TileMap[i][j] == '2')  {ladderS.setTexture(ladderT); ladderS.setPosition(j * 32, i * 32);window.draw(ladderS);}
                 if (TileMap[i][j] == '6')  {lavaS.setTexture(lavaT); lavaS.setPosition(j * 32, i * 32); window.draw(lavaS);}
                 if (TileMap[i][j] == '7')  {essenceS.setTexture(essenceT); essenceS.setPosition(j * 32, i * 32); window.draw(essenceS);}
