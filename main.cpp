@@ -163,16 +163,16 @@ int main() {
 
     // run the program as long as the window is open
     Necromancer necr1;
-    necr1.SetCooX(1);
-    necr1.SetCooY(18);
+    necr1.SetCooX(6);
+    necr1.SetCooY(12);
     int x1,y1,num;
     necr1.SetNecrM_mana(100000);
     necr1.SetNecrR_mana(100000);
     int Q = 0;
     Coordinate begin;
     Coordinate end;
-    en_mas[0]->SetCooX(14);
-    en_mas[0]->SetCooY(7);
+    en_mas[0]->SetCooX(5);
+    en_mas[0]->SetCooY(15);
     en_mas[1]->SetCooX(1);
     en_mas[1]->SetCooY(17);
     while (window.isOpen())
@@ -299,6 +299,29 @@ int main() {
                         map1.find_way(begin,end);
                         way = chse_way(map1.get_data().field,begin,end);
                         en_mas[i]->move(map1.get_data(), way);
+                    }
+                }else if(en_mas[i]->GetCrFraction() == "Necromancer squad" && en_mas[i]->GetEnemyStL() == 1){
+                    int tr = 0;
+                    char way;
+                    for(int j = 0 ; j < en_mas.getlen();j++){
+                        if(en_mas[j]->GetCrFraction() != "Necromancer squad" && en_mas[j]->GetEnemyStL() == 1){
+                            tr = en_mas[i]->cause_dam(*en_mas[j]);
+                            if(tr == 1){break;}
+                        }
+                    }
+                    if(tr != 1){
+                        for(int j = 0; j < en_mas.getlen();j++){
+                            if(en_mas[j]->GetCrFraction() != "Necromancer squad" && en_mas[j]->GetEnemyStL() == 1){
+                                begin.x = en_mas[i]->GetCooX();
+                                begin.y = en_mas[i]->GetCooY();
+                                end.x = en_mas[j]->GetCooX();
+                                end.y = en_mas[j]->GetCooY();
+                                map1.find_way(begin,end);
+                                way = chse_way(map1.get_data().field,begin,end);
+                                en_mas[i]->move(map1.get_data(), way);
+                                if(way != '/'){break;}
+                            }
+                        }
                     }
                 }
             }
