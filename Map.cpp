@@ -149,7 +149,7 @@ namespace necro {
 
 	}
 	bool Level::check_el(Field* cell) {
-		if (cell->What_it == 1 || cell->flag == 1 || cell->What_it == 4 || cell->What_it == 3) {
+		if (cell->What_it == 1 || cell->flag == 1 || cell->What_it == 4) {
 			return false;
 		}
 		return true;

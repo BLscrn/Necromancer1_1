@@ -65,7 +65,7 @@ int main() {
             "11111111111111111111111111111111",
             "17000071210000000000000001000001",
             "10077001010000000600000001000001",
-            "10077001010000000000060003000001",
+            "10077001010000000000060004000001",
             "10000001010000000000000001000001",
             "10077001040000600000000601116111",
             "10700701010000000000000001770001",
@@ -82,11 +82,11 @@ int main() {
             "11111111111101111111111101111111",
             "10000000040100000000001100040771",
             "10100000010100000000000111110001",
-            "10100000010100000000000300000001",
+            "10100000010100000000000400000001",
             "10141114110100066666000111111101",
             "10100100010100066666000100400101",
             "10100100710000066666000100100101",
-            "10111111110000066666000300400401",
+            "10111111110000066666000400400401",
             "10000000010000066666000111111111",
             "11111111010000066666000100000001",
             "10000001010000066666000100707071",
@@ -166,6 +166,7 @@ int main() {
     necr1.SetCooX(6);
     necr1.SetCooY(12);
     int x1,y1,num;
+    bool check;
     necr1.SetNecrM_mana(100000);
     necr1.SetNecrR_mana(100000);
     int Q = 0;
@@ -282,6 +283,26 @@ int main() {
                 en_mas.remove(i);
             }
         }
+        check = 1;
+        for(int i = 0; i < en_mas.getlen();i++){
+            if(en_mas[i]->GetEnemyType() != "Necromancer squad" && en_mas[i]->GetEnemyStL() == 1) {
+                check = 0;
+                break;
+            }
+        }
+        if(check == 1){
+            sf::Image win;
+            win.loadFromFile("../img/win.png");
+            sf::Texture winT;
+            winT.loadFromImage(win);
+            sf::Sprite winS;
+            winS.setTexture(winT);
+            window.draw(winS);
+            window.display();
+            sleep(2);
+            window.close();
+        }
+
 
 
         if(Q == 1){
@@ -351,7 +372,18 @@ int main() {
             Q = 0;
         }
 
-
+        if(necr1.GetCrR_health() <= 0){
+            sf::Image lose;
+            lose.loadFromFile("../img/cat.jpg");
+            sf::Texture loseT;
+            loseT.loadFromImage(lose);
+            sf::Sprite loseS;
+            loseS.setTexture(loseT);
+            window.draw(loseS);
+            window.display();
+            sleep(2);
+            window.close();
+        }
 
 
             window.clear(sf::Color::Black);
