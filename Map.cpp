@@ -170,6 +170,8 @@ namespace necro {
 	}
 	void Level::count_path(Field* prev, Field& cell) {
 		int help_dist;
+        int this_dist;
+        /*
 		help_dist = prev->What_it == 6 ? prev->distance + 20 : prev->distance + 1;
 		if (cell.distance != -1) {
 			cell.distance = cell.distance < help_dist ? cell.distance : help_dist;
@@ -178,7 +180,19 @@ namespace necro {
 		else {
 			cell.distance = help_dist;
 			cell.previous = prev;
-		}
+		}*/
+
+        help_dist = prev->distance;
+        this_dist = cell.What_it == 6 ? 20 : 1;
+        if (cell.distance != -1) {
+            cell.distance = cell.distance - this_dist < help_dist ? cell.distance : help_dist + this_dist;
+            cell.previous = cell.distance - this_dist < help_dist ? cell.previous : prev;
+        }
+        else{
+            cell.distance = help_dist + this_dist;
+            cell.previous = prev;
+        }
+
 	}
 
 

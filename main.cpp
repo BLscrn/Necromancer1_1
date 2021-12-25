@@ -163,8 +163,8 @@ int main() {
 
     // run the program as long as the window is open
     Necromancer necr1;
-    necr1.SetCooX(2);
-    necr1.SetCooY(15);
+    necr1.SetCooX(1);
+    necr1.SetCooY(18);
     int x1,y1,num;
     necr1.SetNecrM_mana(100000);
     necr1.SetNecrR_mana(100000);
@@ -173,6 +173,8 @@ int main() {
     Coordinate end;
     en_mas[0]->SetCooX(14);
     en_mas[0]->SetCooY(7);
+    en_mas[1]->SetCooX(1);
+    en_mas[1]->SetCooY(17);
     while (window.isOpen())
     {
 
