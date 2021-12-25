@@ -60,32 +60,42 @@ namespace necro {
 		this->field[x1][y1].previous = coordinate.previous;
 		this->field[x1][y1].What_it = coordinate.What_it;
 	}
+    bool Level::check_Q(vector<Field*> Q, Coordinate Coo){
+        for(int i = 0 ; i < Q.getlen(); i++){
+            if(Coo.x == Q[i]->coo.x && Coo.y == Q[i]->coo.y){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 	bool Level::Q_move(vector<Field*>& Q, int num, Coordinate goal) {
 		Coordinate help;
 		help.x = Q[num]->coo.x;
 		help.y = Q[num]->coo.y;
 		help.x += 1;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y]))) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
 			Q.push_back(&(this->field[help.x][help.y]));
 
 		}
 		help.x -= 2;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y]))) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
 			Q.push_back(&(this->field[help.x][help.y]));
 		}
 		help.x += 1;
 		help.y += 1;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y]))) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
 			Q.push_back(&(this->field[help.x][help.y]));
 		}
 		help.y -= 2;
-		if (check_per(help) && check_el(&(this->field[help.x][help.y]))) {
+		if (check_per(help) && check_el(&(this->field[help.x][help.y])) && check_Q(Q, help)) {
 			count_path(Q[num], this->field[help.x][help.y]);
 			if (help.x == goal.x && help.y == goal.y) { return true; }
 			Q.push_back(&(this->field[help.x][help.y]));
@@ -131,7 +141,7 @@ namespace necro {
 
 	}
 	bool Level::check_el(Field* cell) {
-		if (cell->What_it == 6 || cell->flag == 1 || cell->What_it == 4) {
+		if (cell->What_it == 1 || cell->flag == 1 || cell->What_it == 4 || cell->What_it == 3) {
 			return false;
 		}
 		return true;
@@ -162,4 +172,6 @@ namespace necro {
 			cell.previous = prev;
 		}
 	}
+
+
 }

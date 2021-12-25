@@ -30,5 +30,9 @@ namespace necro {
 
 
 
+    char chse_way(vector<vector<Field>> map , Coordinate begin, Coordinate end);
+
+
+
 }
 #endif

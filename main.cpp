@@ -163,11 +163,16 @@ int main() {
 
     // run the program as long as the window is open
     Necromancer necr1;
-    necr1.SetCooX(2);
-    necr1.SetCooY(2);
+    necr1.SetCooX(13);
+    necr1.SetCooY(5);
     int x1,y1,num;
     necr1.SetNecrM_mana(100000);
     necr1.SetNecrR_mana(100000);
+    int Q = 0;
+    Coordinate begin;
+    Coordinate end;
+    en_mas[0]->SetCooX(14);
+    en_mas[0]->SetCooY(7);
     while (window.isOpen())
     {
 
@@ -186,7 +191,8 @@ int main() {
                 window.draw(necr1.GetSprite());
                 sleep(1);
                 std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
-                std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+                std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;
+                Q = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
               necr1.move(map1.get_data(),'s');
@@ -195,6 +201,7 @@ int main() {
                 sleep(1);
                 std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
                 std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+                Q = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
                 necr1.move(map1.get_data(),'a');
@@ -203,6 +210,7 @@ int main() {
                 sleep(1);
                 std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
                 std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+                Q = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
                 necr1.move(map1.get_data(),'d');
@@ -211,6 +219,7 @@ int main() {
                 sleep(1);
                 std::cout << necr1.GetCooX() << "  " << necr1.GetCooY() << std::endl ;
                 std::cout << map1.get_data().field[necr1.GetCooX()][necr1.GetCooY()].What_it << std::endl ;;
+                Q = 1;
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
@@ -232,9 +241,11 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
             sleep(1);
             table[0]->make_mage(necr1,en_mas[num]);
+            Q = 1;
         }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
             sleep(1);
             table[1]->make_mage(necr1,en_mas[num]);
+            Q = 1;
         }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
             sleep(1);
             table[2]->make_mage(necr1, en_mas[num]);
@@ -243,6 +254,7 @@ int main() {
             }else if(en_mas[num]->GetEnemyType() == "Vampire"){
                 en_mas[num]->SetSprite("../img/vampire1.png");
             }
+            Q = 1;
         }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
             sleep(1);
             table[3]->make_mage(necr1, en_mas[num]);
@@ -251,6 +263,7 @@ int main() {
             }else if(en_mas[num]->GetEnemyType() == "Vampire"){
                 en_mas[num]->SetSprite("../img/vampire1.png");
             }
+            Q = 1;
         }
 
         for(int i = 0; i < en_mas.getlen();i++){
@@ -267,6 +280,30 @@ int main() {
                 en_mas.remove(i);
             }
         }
+
+
+        if(Q == 1){
+            for(int i = 0; i < en_mas.getlen();i++ ){
+                if(en_mas[i]->GetCrFraction() != "Necromancer squad" && en_mas[i]->GetEnemyStL() == 1){
+                    int tr = 0;
+                    char way;
+                    tr = en_mas[i]->cause_dam(necr1);
+
+                    if(tr != 1) {
+                        begin.x = en_mas[i]->GetCooX();
+                        begin.y = en_mas[i]->GetCooY();
+                        end.x = necr1.GetCooX();
+                        end.y = necr1.GetCooY();
+                        map1.find_way(begin,end);
+                        way = chse_way(map1.get_data().field,begin,end);
+                        en_mas[i]->move(map1.get_data(), way);
+                    }
+                }
+            }
+            Q = 0;
+        }
+
+
 
 
             window.clear(sf::Color::Black);

@@ -71,7 +71,7 @@ namespace necro {
 		virtual Coordinate death_cr() {/* add with map */Coordinate coor; coor.x = this->x; coor.y = this->y; return coor;};
 		virtual void set_dateCO(Coordinate data) { return Object::set_dateCO(data); };
 		virtual Coordinate get_dateCO() {return Object::get_dateCO(); };
-		virtual void cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
+		virtual int cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
 	};
 
 

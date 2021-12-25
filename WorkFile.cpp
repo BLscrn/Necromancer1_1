@@ -320,5 +320,26 @@ namespace necro {
         f.close();
         return ret_lvl;
     }
+
+    char chse_way(vector<vector<Field>> map , Coordinate begin,Coordinate end){
+
+        Field* help_end;
+        help_end = &map[end.x][end.y];
+        if(help_end->previous == nullptr){return '/';}
+        else{
+            while(help_end->previous->previous != nullptr){
+                help_end = help_end->previous;
+            }
+        }
+        if(map[begin.x + 1][begin.y].coo.y == help_end->coo.y && map[begin.x + 1][begin.y].coo.x == help_end->coo.x){
+            return 'd';
+        }else if(map[begin.x - 1][begin.y].coo.y == help_end->coo.y && map[begin.x - 1][begin.y].coo.x == help_end->coo.x){
+            return 'a';
+        }else if(map[begin.x][begin.y + 1].coo.y == help_end->coo.y && map[begin.x][begin.y + 1].coo.x == help_end->coo.x){
+            return 's';
+        }else if(map[begin.x ][begin.y-1].coo.y == help_end->coo.y && map[begin.x ][begin.y-1].coo.x == help_end->coo.x){
+            return 'w';
+        }
+    }
 }
 

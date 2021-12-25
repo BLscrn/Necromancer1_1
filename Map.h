@@ -37,6 +37,7 @@ namespace necro {
 		int find_n_q(vector<Field*> Q, Coordinate goal);
 		double len_to_goal(Coordinate coo, Coordinate goal);
 		void count_path(Field* prev, Field& cell);
+        bool check_Q(vector<Field*> Q, Coordinate Coo);
 	public:
 		Level(int x, int y);
 		Level(Lvl lvl);
@@ -47,6 +48,7 @@ namespace necro {
 		void find_way(Coordinate begin, Coordinate end);
 
 	};
+
 
 }
 

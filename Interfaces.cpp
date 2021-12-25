@@ -72,16 +72,17 @@ namespace necro {
 		this->statusL = 0;
 		this->type = "";
 	}
-	void Enemy::cause_dam(ICreature& Target) {
+	int Enemy::cause_dam(ICreature& Target) {
 		Creature data_CT = Target.get_dateC();
 		Coordinate data_COT = Target.get_dateCO();
 		if ((this->x - data_COT.x) * (this->x - data_COT.x) + (this->y - data_COT.y) * (this->y - data_COT.y) == 1) {
 			//random
 			data_CT.real_health -= this->damage;
 			Target.set_dateC(data_CT);
+            return 1;
 		}
 		else {
-			throw std::logic_error("");
+			return 0;
 		}
 
 	}

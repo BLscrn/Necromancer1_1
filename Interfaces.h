@@ -212,7 +212,7 @@ namespace necro {
 		virtual DLenemy_data get_data() = 0;
 		virtual void set_data(DLenemy_data data) = 0;
 		virtual Coordinate death_cr() = 0;
-		virtual void cause_dam(ICreature&) = 0;
+		virtual int cause_dam(ICreature&) = 0;
 	};
 	class LEnemy :public Enemy, public  Summoner{
 	public:
@@ -228,7 +228,7 @@ namespace necro {
 		virtual void set_dateC(Creature data) { return ICreature::set_dateC(data); };
 		virtual void set_dateCO(Coordinate data) { return Object::set_dateCO(data); };
 		virtual Coordinate get_dateCO() { return Object::get_dateCO(); };
-		virtual void cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
+		virtual int cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
 		virtual DLenemy_data Call_cr();
 	};
 
@@ -246,7 +246,7 @@ namespace necro {
 		virtual void set_dateC(Creature data) { return ICreature::set_dateC(data); };
 		virtual void set_dateCO(Coordinate data) { return Object::set_dateCO(data); };
 		virtual Coordinate get_dateCO() { return Object::get_dateCO(); };
-		virtual void cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
+		virtual int cause_dam(ICreature& Target) { return Enemy::cause_dam(Target); };
 		virtual DLenemy_data Call_cr();
 	};
 	class Undead {
